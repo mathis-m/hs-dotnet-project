@@ -1,6 +1,6 @@
 ﻿namespace Common.ConsoleUtils;
 
-public interface IUserInput
+public interface IUserInput<out TInput> where TInput : notnull
 {
-    string PromptForString(string prompt);
+    TInput Prompt(string prompt);
 }

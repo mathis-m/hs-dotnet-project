@@ -3,7 +3,7 @@ using CompanyNameDisplay;
 using Microsoft.Extensions.DependencyInjection;
 
 var sp = new ServiceCollection()
-    .AddSingleton<IUserInput, UserInput>()
+    .AddSingleton<IUserInput<string>, StringUserInput>()
     .AddSingleton<ICompanyNameFormatter, StarAroundCompanyNameFormatter>()
     .BuildServiceProvider();
 
