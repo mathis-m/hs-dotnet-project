@@ -1,6 +1,7 @@
 ﻿using CityDistance;
 using Common.BngUtils;
 using Common.ConsoleUtils;
+using Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 var sp = new ServiceCollection()

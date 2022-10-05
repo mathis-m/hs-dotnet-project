@@ -1,4 +1,4 @@
-﻿namespace CityDistance;
+﻿namespace Common.Extensions;
 
 public static class ChoiceExtensions
 {
