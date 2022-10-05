@@ -1,0 +1,1 @@
+Anbei der Link zum Github repo, bzw. der 2ten Abgabe: https://github.com/mathis-m/hs-dotnet-project/blob/main/HsDotNetProject/CityDistance/README.md
