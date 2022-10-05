@@ -6,6 +6,7 @@ public class BngDistanceCalculator : IBngDistanceCalculator
     {
         var eastingDiffSquared = Math.Pow(start.Easting - end.Easting, 2);
         var northingDiffSquared = Math.Pow(start.Northing - end.Northing, 2);
+
         return Math.Sqrt(eastingDiffSquared + northingDiffSquared);
     }
 }

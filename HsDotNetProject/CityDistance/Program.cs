@@ -31,10 +31,7 @@ var cities = new City[]
     new("Tallinn", new BngPoint(1889074, 1368933))
 };
 
-var cityChoices = cities
-    .Select((city, index) => new {city, key = index + 1})
-    .ToDictionary(x => x.key, x => x.city.Name);
-
+var cityChoices = cities.ToChoiceDictionary(city => city.Name);
 
 var selectedCityIndices = intChoiceInput.PromptUserMultiChoice(
     cityChoices,

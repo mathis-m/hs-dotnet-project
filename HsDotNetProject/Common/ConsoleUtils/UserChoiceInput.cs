@@ -27,6 +27,7 @@ public class UserChoiceInput<TKey> : IUserChoiceInput<TKey> where TKey : notnull
         var promptTexts = Enumerable.Range(1, count)
             .Select(idx => $"Choice #{idx}")
             .ToList();
+
         return PromptUserMultiChoice(choices, promptTexts, title);
     }
 
@@ -61,6 +62,7 @@ public class UserChoiceInput<TKey> : IUserChoiceInput<TKey> where TKey : notnull
     private static void PrintChoices(Dictionary<TKey, string> choices, string title)
     {
         Console.WriteLine(title);
+
         foreach (var (key, text) in choices) Console.WriteLine($"[{key}] {text}");
 
         Console.WriteLine();
