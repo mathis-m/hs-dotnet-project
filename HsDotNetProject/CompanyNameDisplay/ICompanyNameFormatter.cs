@@ -2,5 +2,5 @@
 
 internal interface ICompanyNameFormatter
 {
-    public void GatherNameAndPrint();
+    public string FormatCompanyName(string name);
 }

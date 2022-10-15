@@ -7,5 +7,9 @@ var sp = new ServiceCollection()
     .AddSingleton<ICompanyNameFormatter, StarAroundCompanyNameFormatter>()
     .BuildServiceProvider();
 
+var userInput = sp.GetRequiredService<IUserInput<string>>();
 var formatter = sp.GetRequiredService<ICompanyNameFormatter>();
-formatter.GatherNameAndPrint();
+
+var companyName = userInput.Prompt("Please enter the company name");
+var formattedCompanyName = formatter.FormatCompanyName(companyName);
+Console.WriteLine(formattedCompanyName);
