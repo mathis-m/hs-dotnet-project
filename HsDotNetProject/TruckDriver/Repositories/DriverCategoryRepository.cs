@@ -27,19 +27,23 @@ public class DriverCategoryRepository : IDriverCategoryRepository
     public DriverCategory GetById(string type)
     {
         var allCategories = GetAll();
-        return GetCategoryWithType(type, allCategories);
+        return GetCategoryByType(type, allCategories);
     }
 
     public async Task<DriverCategory> GetByIdAsync(string type)
     {
         var allCategories = await GetAllAsync();
-        return GetCategoryWithType(type, allCategories);
+        return GetCategoryByType(type, allCategories);
     }
 
-    private static DriverCategory GetCategoryWithType(string type, IEnumerable<DriverCategory> allCategories)
+    private static DriverCategory GetCategoryByType(string type, IEnumerable<DriverCategory> allCategories)
     {
         var categoryWithType = allCategories.FirstOrDefault(c => c.Type == type);
-        if (categoryWithType == null) throw new InvalidOperationException($"{nameof(DriverCategory)} with type '${type}' does not exist");
+        if (categoryWithType == null)
+            throw new ArgumentOutOfRangeException(
+                nameof(type),
+                $"No category with type '${type}' does not exist"
+            );
 
         return categoryWithType;
     }

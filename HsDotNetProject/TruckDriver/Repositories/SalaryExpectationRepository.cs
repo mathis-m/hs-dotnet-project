@@ -64,8 +64,10 @@ public class SalaryExpectationRepository : ISalaryExpectationRepository
     {
         var salaryExpectation = allExpectations.FirstOrDefault(x => x.SalaryPerMonth == salaryPerMonth);
         if (salaryExpectation == null)
-            throw new InvalidOperationException(
-                $"The salary expectation per month must be within ${LowerLimit} and ${UpperLimit}");
+            throw new ArgumentOutOfRangeException(
+                nameof(salaryPerMonth),
+                $"The salary expectation per month must be within ${LowerLimit} and ${UpperLimit}"
+            );
 
         return salaryExpectation;
     }

@@ -53,7 +53,11 @@ public class NameRepository : INameRepository
         var nameWithMatchingFullName = allNames
             .FirstOrDefault(x => x.FullName == fullName);
 
-        if (nameWithMatchingFullName == null) throw new InvalidOperationException($"No name with fullname '{fullName}' exists.");
+        if (nameWithMatchingFullName == null)
+            throw new ArgumentOutOfRangeException(
+                nameof(fullName),
+                $"No name with fullname '{fullName}' exists."
+            );
 
         return nameWithMatchingFullName;
     }
