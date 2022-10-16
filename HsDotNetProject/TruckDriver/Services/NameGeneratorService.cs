@@ -24,7 +24,7 @@ public class NameGeneratorService : RandomGeneratorService<Name>
         if (!generateUniqueName)
             return GetRandomItem(allNames);
 
-        var randomName = GetRandomItem(allNames);
+        var randomName = GetRandomItem(unusedNames);
         _nameCache.Add(randomName);
 
         return randomName;
