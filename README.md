@@ -6,10 +6,9 @@ Until otherwise stated the HsDotNetProject Solution cotains all solutions for th
 
 ## Solved Exercises
 - [Iteration 1 - Der Firmenname](/HsDotNetProject/CompanyNameDisplay/README.md)
-
 - [Iteration 2 - Der Standort](/HsDotNetProject/CityDistance/README.md)
-
 - [Iteration 3 - Die Fahrer](/HsDotNetProject/TruckDriver/README.md)
+- [Iteration 4 - Die Fahrzeuganschaffung](/HsDotNetProject/VehicleAcquisition/README.md)
 
 ## TODO
-- Iteration 4 - Die Fahrzeuganschaffung
+- None
