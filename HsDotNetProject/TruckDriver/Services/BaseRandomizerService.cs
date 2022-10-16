@@ -1,9 +1,9 @@
 ﻿namespace TruckDriver.Services;
 
-public abstract class RandomGeneratorService<TType> : IGeneratorService<TType>
+public abstract class BaseRandomizerService<TType> : IRandomizerService<TType>
 {
     private readonly Random _random = new();
-    public abstract Task<TType> GenerateAsync();
+    public abstract Task<TType> NextAsync();
 
     protected TType GetRandomItem(IEnumerable<TType> enumerable)
     {

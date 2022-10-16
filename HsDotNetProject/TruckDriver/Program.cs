@@ -1,5 +1,5 @@
-﻿using Common.Extensions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TruckDriver;
 using TruckDriver.Models;
 using TruckDriver.Options;
 using TruckDriver.Providers;
@@ -41,23 +41,19 @@ services
 
 // Setup Generators
 services
-    .AddSingleton<IGeneratorService<Name>, NameGeneratorService>()
-    .AddSingleton<IGeneratorService<SalaryExpectation>, SalaryExpectationGeneratorService>()
-    .AddSingleton<IGeneratorService<DriverCategory>, DriverCategoryGeneratorService>()
-    .AddSingleton<IGeneratorService<TruckOperator>, TruckOperatorGeneratorService>();
+    .AddSingleton<IRandomizerService<Name>, NameRandomizerService>()
+    .AddSingleton<IRandomizerService<SalaryExpectation>, SalaryExpectationRandomizerService>()
+    .AddSingleton<IRandomizerService<DriverCategory>, DriverCategoryRandomizerService>()
+    .AddSingleton<IRandomizerService<TruckOperator>, TruckOperatorRandomizerService>();
+
+// Setup Console Application
+services
+    .AddSingleton<TruckOperatorListingApplication>();
 
 var serviceProvider = services
     .BuildServiceProvider();
 
-var truckOperatorGeneratorService = serviceProvider.GetRequiredService<IGeneratorService<TruckOperator>>();
-
-
-var drivers = new List<TruckOperator>();
-
-for (var i = 0; i < 5; i++) drivers.Add(await truckOperatorGeneratorService.GenerateAsync());
-
-drivers.Print(driver =>
-    $"{driver.Name.FullName}, {driver.SalaryExpectation.FormattedValueWithIsoCode}, {driver.DriverCategory.Type}"
-);
+var app = serviceProvider.GetRequiredService<TruckOperatorListingApplication>();
+await app.ExecuteAsync();
 
 Console.ReadLine();
