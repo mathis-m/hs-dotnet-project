@@ -2,5 +2,5 @@
 
 public interface IGeneratorService<TType>
 {
-    Task<List<TType>> GenerateAsync(int count);
+    Task<TType> GenerateAsync();
 }

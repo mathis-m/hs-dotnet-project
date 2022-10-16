@@ -6,6 +6,6 @@ public static class PrintExtensions
         bool startAtZero = false)
     {
         var currentIdx = startAtZero ? 0 : 1;
-        foreach (var item in list) Console.WriteLine($"[{currentIdx++}] {selectTextDelegate(item)}");
+        foreach (var item in list) Console.WriteLine($"{currentIdx++} {selectTextDelegate(item)}");
     }
 }

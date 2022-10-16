@@ -10,6 +10,6 @@ var sp = new ServiceCollection()
 var userInput = sp.GetRequiredService<IUserInput<string>>();
 var formatter = sp.GetRequiredService<ICompanyNameFormatter>();
 
-var companyName = userInput.Prompt("Please enter the company name");
+var companyName          = userInput.Prompt("Please enter the company name");
 var formattedCompanyName = formatter.FormatCompanyName(companyName);
 Console.WriteLine(formattedCompanyName);

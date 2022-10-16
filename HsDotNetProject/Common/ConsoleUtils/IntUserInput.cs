@@ -11,7 +11,7 @@ public class IntUserInput : IUserInput<int>
 
     public int Prompt(string prompt)
     {
-        int parsedInput;
+        int  parsedInput;
         bool isValidInt;
         do
         {

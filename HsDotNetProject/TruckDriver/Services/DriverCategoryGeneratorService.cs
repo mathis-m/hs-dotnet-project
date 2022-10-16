@@ -1,36 +1,20 @@
-﻿using Microsoft.Extensions.Options;
-using TruckDriver.Models;
-using TruckDriver.Options;
+﻿using TruckDriver.Models;
+using TruckDriver.Repositories;
 
 namespace TruckDriver.Services;
 
-public class DriverCategoryGeneratorService : IGeneratorService<DriverCategory>
+public class DriverCategoryGeneratorService : RandomGeneratorService<DriverCategory>
 {
-    private readonly DriverCategoryConfig _config;
-    private readonly Random _random = new();
+    private readonly IDriverCategoryRepository _repository;
 
-    public DriverCategoryGeneratorService(IOptions<DriverCategoryConfig> options)
+    public DriverCategoryGeneratorService(IDriverCategoryRepository repository)
     {
-        _config = options.Value;
+        _repository = repository;
     }
 
-    public Task<List<DriverCategory>> GenerateAsync(int count)
+    public override async Task<DriverCategory> GenerateAsync()
     {
-        var categories = new List<DriverCategory>();
-        for (var i = 0; i < count; i++)
-        {
-            var driverCategory = GetRandomDriverCategory();
-            categories.Add(driverCategory);
-        }
-
-        return Task.FromResult(categories);
-    }
-
-    private DriverCategory GetRandomDriverCategory()
-    {
-        var typeIndex = _random.Next(_config.AvailableTypes.Count);
-        var type = _config.AvailableTypes[typeIndex];
-        var driverCategory = new DriverCategory(type);
-        return driverCategory;
+        var allCategories = await _repository.GetAllAsync();
+        return GetRandomItem(allCategories);
     }
 }

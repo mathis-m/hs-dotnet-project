@@ -4,5 +4,6 @@ namespace TruckDriver.Options;
 
 public class DriverCategoryConfig
 {
-    [Required] public List<string> AvailableTypes { get; set; } = null!;
+    [Required]
+    public List<string> AvailableTypes { get; set; } = null!;
 }

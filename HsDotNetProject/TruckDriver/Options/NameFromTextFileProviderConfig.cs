@@ -4,5 +4,6 @@ namespace TruckDriver.Options;
 
 public class NameFromTextFileProviderConfig
 {
-    [Required] public string FilePath { get; set; } = null!;
+    [Required]
+    public string FilePath { get; set; } = null!;
 }

@@ -1,41 +1,32 @@
 ﻿using TruckDriver.Models;
-using TruckDriver.Providers;
+using TruckDriver.Repositories;
 
 namespace TruckDriver.Services;
 
-public class NameGeneratorService : IGeneratorService<Name>
+public class NameGeneratorService : RandomGeneratorService<Name>
 {
-    private readonly INameProvider _nameProvider;
-    private readonly Random _random = new();
+    private readonly HashSet<Name>   _nameCache = new();
+    private readonly INameRepository _repository;
 
-    public NameGeneratorService(INameProvider nameProvider)
+    public NameGeneratorService(INameRepository repository)
     {
-        _nameProvider = nameProvider;
+        _repository = repository;
     }
 
-    public async Task<List<Name>> GenerateAsync(int count)
+    public override async Task<Name> GenerateAsync()
     {
-        var names = await _nameProvider.GetAllAsync();
-        var generatedNames = GenerateNamesByCrossProduct(names);
+        var allNames = (await _repository.GetAllAsync()).ToList();
+        var unusedNames = allNames
+            .Where(name => !_nameCache.Contains(name))
+            .ToList();
 
-        var randomGeneratedNames = new List<Name>();
-        for (var i = 0; i < count; i++)
-        {
-            var randomNameIdx = _random.Next(generatedNames.Count);
-            var randomName = generatedNames[randomNameIdx];
-            randomGeneratedNames.Add(randomName);
-        }
+        var generateUniqueName = unusedNames.Any();
+        if (!generateUniqueName)
+            return GetRandomItem(allNames);
 
-        return randomGeneratedNames;
-    }
+        var randomName = GetRandomItem(allNames);
+        _nameCache.Add(randomName);
 
-    private static List<Name> GenerateNamesByCrossProduct(IReadOnlyList<Name> names)
-    {
-        var namesGeneratedByCrossProduct = (
-            from nameForFirst in names
-            from nameForLast in names
-            select new Name(nameForFirst.FirstName, nameForLast.LastName)
-        ).ToList();
-        return namesGeneratedByCrossProduct;
+        return randomName;
     }
 }

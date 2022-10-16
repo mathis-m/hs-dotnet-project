@@ -1,37 +1,20 @@
-﻿using Microsoft.Extensions.Options;
-using TruckDriver.Models;
-using TruckDriver.Options;
+﻿using TruckDriver.Models;
+using TruckDriver.Repositories;
 
 namespace TruckDriver.Services;
 
-public class SalaryExpectationGeneratorService : IGeneratorService<SalaryExpectation>
+public class SalaryExpectationGeneratorService : RandomGeneratorService<SalaryExpectation>
 {
-    private readonly SalaryExpectationLimitsConfig _config;
-    private readonly Random _random = new();
+    private readonly ISalaryExpectationRepository _repository;
 
-    public SalaryExpectationGeneratorService(IOptions<SalaryExpectationLimitsConfig> options)
+    public SalaryExpectationGeneratorService(ISalaryExpectationRepository repository)
     {
-        _config = options.Value;
+        _repository = repository;
     }
 
-    private Currency CurrencyFromConfig => new(_config.CurrencyIso, _config.CurrencySymbol);
-
-    public Task<List<SalaryExpectation>> GenerateAsync(int count)
+    public override async Task<SalaryExpectation> GenerateAsync()
     {
-        var expectations = new List<SalaryExpectation>();
-        for (var i = 0; i < count; i++)
-        {
-            var salaryExpectation = GetRandomSalaryExpectation();
-            expectations.Add(salaryExpectation);
-        }
-
-        return Task.FromResult(expectations);
-    }
-
-    private SalaryExpectation GetRandomSalaryExpectation()
-    {
-        var salary = _random.Next(_config.LowerLimit, _config.UpperLimit + 1);
-        var salaryExpectation = new SalaryExpectation(salary, CurrencyFromConfig);
-        return salaryExpectation;
+        var allSalaryExpectations = await _repository.GetAllAsync();
+        return GetRandomItem(allSalaryExpectations);
     }
 }

@@ -4,5 +4,6 @@ namespace TruckDriver.Providers;
 
 public interface INameProvider
 {
-    Task<IReadOnlyList<Name>> GetAllAsync();
+    Task<IEnumerable<Name>> GetAllAsync();
+    IEnumerable<Name> GetAll();
 }

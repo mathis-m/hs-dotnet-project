@@ -13,14 +13,22 @@ public class NameFromTextFileProvider : INameProvider
         _config = options.Value;
     }
 
-    public async Task<IReadOnlyList<Name>> GetAllAsync()
+    public async Task<IEnumerable<Name>> GetAllAsync()
     {
         ThrowIfFileDoesNotExist();
 
         var rawNames = await File.ReadAllLinesAsync(_config.FilePath);
         return rawNames
-            .Select(ParseName)
-            .ToList();
+            .Select(ParseName);
+    }
+
+    public IEnumerable<Name> GetAll()
+    {
+        ThrowIfFileDoesNotExist();
+
+        var rawNames = File.ReadAllLines(_config.FilePath);
+        return rawNames
+            .Select(ParseName);
     }
 
     private Name ParseName(string rawName)
