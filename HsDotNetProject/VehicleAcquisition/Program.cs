@@ -17,3 +17,5 @@ var trucks = new List<ITruck>
 };
 
 trucks.Print();
+
+Console.ReadLine();
