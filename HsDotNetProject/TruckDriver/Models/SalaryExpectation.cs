@@ -1,4 +1,6 @@
-﻿namespace TruckDriver.Models;
+﻿using Common.Models;
+
+namespace TruckDriver.Models;
 
 public record SalaryExpectation(int SalaryPerMonth, Currency Currency)
 {

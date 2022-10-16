@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Common.Models;
+using Microsoft.Extensions.Options;
 using TruckDriver.Models;
 using TruckDriver.Options;
 
