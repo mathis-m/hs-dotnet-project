@@ -195,6 +195,7 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/StructuralSearch/RecentSearch/=202201191703237228/RecentSearchPlaceholder/=var/Properties/=ExpressionType/@EntryIndexedValue">RestSharp.RestClient</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/StructuralSearch/RecentSearch/=202201191703237228/RecentSearchPlaceholder/=var/Type/@EntryValue">ExpressionPlaceholder</s:String>
 	<s:String x:Key="/Default/PatternsAndTemplates/StructuralSearch/RecentSearch/=202201191703237228/SearchPattern/@EntryValue">$var$.Execute($args$);</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Alignable/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Avanade/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=ciphertext/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=ciphtertext/@EntryIndexedValue">True</s:Boolean>
@@ -203,5 +204,12 @@
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=dataverse/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=esslingen/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Invalidatable/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Overflowable/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Paddable/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=powershell/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/UserDictionary/Words/=Randomizer/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Randomizer/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Renderable/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=splitted/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Stylings/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Uconsole/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Wrappable/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

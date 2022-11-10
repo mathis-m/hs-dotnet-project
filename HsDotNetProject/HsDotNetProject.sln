@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityDistance", "CityDistanc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TruckDriver", "TruckDriver\TruckDriver.csproj", "{A3C6265E-A4A7-4B2E-8EDF-62F42839AAA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleAcquisition", "VehicleAcquisition\VehicleAcquisition.csproj", "{6CDC3024-BFC7-44D2-80F4-7AF3D4D79A65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VehicleAcquisition", "VehicleAcquisition\VehicleAcquisition.csproj", "{6CDC3024-BFC7-44D2-80F4-7AF3D4D79A65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UconsoleI", "UconsoleI\UconsoleI.csproj", "{758E4DD7-C9B7-417C-A77F-D1CB526ACB6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{6427DD3A-76C1-4144-95E9-75733BEF6550}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{6CDC3024-BFC7-44D2-80F4-7AF3D4D79A65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CDC3024-BFC7-44D2-80F4-7AF3D4D79A65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CDC3024-BFC7-44D2-80F4-7AF3D4D79A65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{758E4DD7-C9B7-417C-A77F-D1CB526ACB6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{758E4DD7-C9B7-417C-A77F-D1CB526ACB6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{758E4DD7-C9B7-417C-A77F-D1CB526ACB6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{758E4DD7-C9B7-417C-A77F-D1CB526ACB6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6427DD3A-76C1-4144-95E9-75733BEF6550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6427DD3A-76C1-4144-95E9-75733BEF6550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6427DD3A-76C1-4144-95E9-75733BEF6550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6427DD3A-76C1-4144-95E9-75733BEF6550}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
