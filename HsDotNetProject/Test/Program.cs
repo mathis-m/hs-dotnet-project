@@ -15,7 +15,7 @@ var table = new Table
 };
 
 
-// Add some columns
+// Add some columns test
 table.AddColumn(new TableColumn(new Text("#")).Padding(new Padding(0, 1)));
 table.AddColumn(new TableColumn(new Text("Ware", new Styling(decoration:Decoration.Bold | Decoration.SlowBlink))).Padding(new Padding(0, 1)));
 table.AddColumn(new TableColumn(new Text("Typ")).Padding(new Padding(0, 1)));
