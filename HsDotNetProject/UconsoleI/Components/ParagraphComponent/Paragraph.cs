@@ -9,10 +9,6 @@ namespace UconsoleI.Components.ParagraphComponent;
 public sealed class Paragraph : Component, IAlignable, IOverflowable
 {
     private readonly List<ElementCollection> _lines;
-    public Justify? Alignment { get; set; }
-    public Overflow? Overflow { get; set; }
-    public int Length => _lines.Sum(line => line.Length) + Math.Max(0, Lines - 1);
-    public int Lines => _lines.Count;
 
     public Paragraph()
     {
@@ -22,20 +18,19 @@ public sealed class Paragraph : Component, IAlignable, IOverflowable
     public Paragraph(string text, Styling? style = null)
         : this()
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        if (text is null) throw new ArgumentNullException(nameof(text));
 
         Append(text, style);
     }
 
+    public int Length => _lines.Sum(line => line.Length) + Math.Max(0, Lines - 1);
+    public int Lines => _lines.Count;
+    public Justify? Alignment { get; set; }
+    public Overflow? Overflow { get; set; }
+
     public Paragraph Append(string text, Styling? style = null)
     {
-        if (text is null)
-        {
-            throw new ArgumentNullException(nameof(text));
-        }
+        if (text is null) throw new ArgumentNullException(nameof(text));
 
         foreach (var (_, isFirst, isLast, current) in text.SplitLines().EnumerateWithContext())
         {
@@ -49,26 +44,18 @@ public sealed class Paragraph : Component, IAlignable, IOverflowable
                 }
 
                 if (string.IsNullOrEmpty(current))
-                {
                     line.Add(DefaultElements.Empty);
-                }
                 else
-                {
                     line.AddRange(current.SplitWords().Select(span => new Element(span, styling: style ?? DefaultStylings.Plain)));
-                }
             }
             else
             {
                 var line = new ElementCollection();
 
                 if (string.IsNullOrEmpty(current))
-                {
                     line.Add(DefaultElements.Empty);
-                }
                 else
-                {
                     line.AddRange(current.SplitWords().Select(span => new Element(span, styling: style ?? DefaultStylings.Plain)));
-                }
 
                 _lines.Add(line);
             }
@@ -79,10 +66,7 @@ public sealed class Paragraph : Component, IAlignable, IOverflowable
 
     protected override SizeConstraint CalculateSizeConstraint(UIContext context, int maxWidth)
     {
-        if (_lines.Count == 0)
-        {
-            return new SizeConstraint(0, 0);
-        }
+        if (_lines.Count == 0) return new SizeConstraint(0, 0);
 
         var min = _lines.Max(line => line.Max(element => element.CellCount()));
         var max = _lines.Max(x => x.CellCount());
@@ -92,15 +76,9 @@ public sealed class Paragraph : Component, IAlignable, IOverflowable
 
     protected override IEnumerable<Element> Render(UIContext context, int maxWidth)
     {
-        if (context is null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+        if (context is null) throw new ArgumentNullException(nameof(context));
 
-        if (_lines.Count == 0)
-        {
-            return Array.Empty<Element>();
-        }
+        if (_lines.Count == 0) return Array.Empty<Element>();
 
         var lines = context.SingleLine
             ? new List<ElementCollection>(_lines)
@@ -108,19 +86,16 @@ public sealed class Paragraph : Component, IAlignable, IOverflowable
 
         // Justify lines
         var justification = context.Justification ?? Alignment ?? Justify.Left;
-        
+
         if (justification == Justify.Left)
             return context.SingleLine
                 ? lines[0].Where(element => !element.IsNewLine)
                 : new ElementCollectionEnumerator(lines);
-        
-        foreach (var line in lines)
-        {
-            Aligner.Align(line, justification, maxWidth);
-        }
 
-        return context.SingleLine 
-            ? lines[0].Where(element => !element.IsNewLine) 
+        foreach (var line in lines) Aligner.Align(line, justification, maxWidth);
+
+        return context.SingleLine
+            ? lines[0].Where(element => !element.IsNewLine)
             : new ElementCollectionEnumerator(lines);
     }
 
@@ -141,15 +116,10 @@ public sealed class Paragraph : Component, IAlignable, IOverflowable
     private List<ElementCollection> SplitLines(int maxWidth)
     {
         if (maxWidth <= 0)
-        {
             // Nothing fits, so return an empty line.
             return new List<ElementCollection>();
-        }
 
-        if (_lines.Max(x => x.CellCount()) <= maxWidth)
-        {
-            return Clone();
-        }
+        if (_lines.Max(x => x.CellCount()) <= maxWidth) return Clone();
 
         var lines = new List<ElementCollection>();
         var line  = new ElementCollection();
@@ -161,10 +131,7 @@ public sealed class Paragraph : Component, IAlignable, IOverflowable
             Element? current;
             if (queue.Count == 0)
             {
-                if (!iterator.MoveNext())
-                {
-                    break;
-                }
+                if (!iterator.MoveNext()) break;
 
                 current = iterator.Current;
             }
@@ -173,10 +140,7 @@ public sealed class Paragraph : Component, IAlignable, IOverflowable
                 current = queue.Dequeue();
             }
 
-            if (current == null)
-            {
-                throw new InvalidOperationException("Iterator returned empty segment.");
-            }
+            if (current == null) throw new InvalidOperationException("Iterator returned empty segment.");
 
             var newLine = false;
 
@@ -205,10 +169,7 @@ public sealed class Paragraph : Component, IAlignable, IOverflowable
 
                     // Add the element and push the rest of them to the queue.
                     line.Add(elements[0]);
-                    foreach (var element in elements.Skip(1))
-                    {
-                        queue.Enqueue(element);
-                    }
+                    foreach (var element in elements.Skip(1)) queue.Enqueue(element);
 
                     continue;
                 }
@@ -224,19 +185,13 @@ public sealed class Paragraph : Component, IAlignable, IOverflowable
                 }
             }
 
-            if (newLine && current.IsWhiteSpace)
-            {
-                continue;
-            }
+            if (newLine && current.IsWhiteSpace) continue;
 
             line.Add(current);
         }
 
         var flushLeftItems = line.Count > 0;
-        if (flushLeftItems)
-        {
-            lines.Add(line);
-        }
+        if (flushLeftItems) lines.Add(line);
 
         return lines;
     }

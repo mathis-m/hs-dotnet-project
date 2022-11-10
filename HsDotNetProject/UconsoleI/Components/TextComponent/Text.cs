@@ -9,14 +9,18 @@ public sealed class Text : Component, IAlignable, IOverflowable
 {
     private readonly Paragraph _paragraph;
 
-    public static Text Empty { get; } = new Text(string.Empty);
-
-    public static Text NewLine { get; } = new Text(Environment.NewLine, DefaultStylings.Plain);
-
     public Text(string text, Styling? styling = null)
     {
         _paragraph = new Paragraph(text, styling);
     }
+
+    public static Text Empty { get; } = new(string.Empty);
+
+    public static Text NewLine { get; } = new(Environment.NewLine, DefaultStylings.Plain);
+
+    public int Length => _paragraph.Length;
+
+    public int Lines => _paragraph.Lines;
 
     public Justify? Alignment
     {
@@ -29,10 +33,6 @@ public sealed class Text : Component, IAlignable, IOverflowable
         get => _paragraph.Overflow;
         set => _paragraph.Overflow = value;
     }
-
-    public int Length => _paragraph.Length;
-
-    public int Lines => _paragraph.Lines;
 
     protected override SizeConstraint CalculateSizeConstraint(UIContext context, int maxWidth)
     {

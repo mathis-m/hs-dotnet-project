@@ -7,17 +7,12 @@ namespace UconsoleI.Components.TableComponent;
 
 internal sealed class TableSizeCalculator
 {
-    private readonly Table _table;
-    public UIContext Options { get; }
-    public IReadOnlyList<TableColumn> Columns => _table.Columns;
-    public IReadOnlyList<TableRow> Rows => _table.Rows;
-    public bool Expand => _table.Expand || _table.Width != null;
-
-    private const int EdgeCount = 2;
-
-    private readonly int?        _explicitWidth;
+    private const    int         EdgeCount = 2;
     private readonly TableBorder _border;
-    private readonly bool        _padRightCell;
+
+    private readonly int?  _explicitWidth;
+    private readonly bool  _padRightCell;
+    private readonly Table _table;
 
     public TableSizeCalculator(Table table, UIContext options)
     {
@@ -29,13 +24,15 @@ internal sealed class TableSizeCalculator
         Options = options ?? throw new ArgumentNullException(nameof(options));
     }
 
+    public UIContext Options { get; }
+    public IReadOnlyList<TableColumn> Columns => _table.Columns;
+    public IReadOnlyList<TableRow> Rows => _table.Rows;
+    public bool Expand => _table.Expand || _table.Width != null;
+
     public int CalculateTotalCellWidth(int maxWidth)
     {
-        var totalCellWidth = maxWidth;
-        if (_explicitWidth != null)
-        {
-            totalCellWidth = Math.Min(_explicitWidth.Value, maxWidth);
-        }
+        var totalCellWidth                         = maxWidth;
+        if (_explicitWidth != null) totalCellWidth = Math.Min(_explicitWidth.Value, maxWidth);
 
         return totalCellWidth - GetNonColumnWidth();
     }
@@ -47,10 +44,7 @@ internal sealed class TableSizeCalculator
         var edges      = hideBorder ? 0 : EdgeCount;
         var padding    = Columns.Select(x => x.Padding?.Width ?? 0).Sum();
 
-        if (!_padRightCell)
-        {
-            padding -= Columns.Last().Padding.GetRightSafe();
-        }
+        if (!_padRightCell) padding -= Columns.Last().Padding.GetRightSafe();
 
         return separators + edges + padding;
     }
@@ -88,10 +82,7 @@ internal sealed class TableSizeCalculator
     public SizeConstraint CalculateColumnSizeConstraint(TableColumn column, int maxWidth)
     {
         // Predetermined width?
-        if (column.Width != null)
-        {
-            return new SizeConstraint(column.Width.Value, column.Width.Value);
-        }
+        if (column.Width != null) return new SizeConstraint(column.Width.Value, column.Width.Value);
 
         var columnIndex = Columns.IndexOf(column);
         var rows        = Rows.Select(row => row[columnIndex]);
@@ -137,10 +128,7 @@ internal sealed class TableSizeCalculator
             var columnDifference = maxColumn - secondMaxColumn;
 
             var ratios = widths.Zip(wrappable, (width, allowWrap) => width == maxColumn && allowWrap ? 1 : 0).ToList();
-            if (ratios.All(x => x == 0) || columnDifference == 0)
-            {
-                break;
-            }
+            if (ratios.All(x => x == 0) || columnDifference == 0) break;
 
             var maxReduce = widths.Select(_ => Math.Min(excessWidth, columnDifference)).ToList();
             widths = Ratio.Reduce(excessWidth, ratios, maxReduce, widths);

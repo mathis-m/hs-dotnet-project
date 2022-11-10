@@ -8,7 +8,7 @@ public static class ChoiceExtensions
         var offset = startAtZero ? 0 : 1;
 
         return array
-            .Select((item, index) => new {text = selectTextDelegate(item), key = index + offset})
+            .Select((item, index) => new { text = selectTextDelegate(item), key = index + offset })
             .ToDictionary(x => x.key, x => x.text);
     }
 }

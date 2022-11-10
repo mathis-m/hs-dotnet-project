@@ -8,10 +8,7 @@ public class ElementCollectionEnumerator : IEnumerable<Element>
 
     public ElementCollectionEnumerator(IEnumerable<ElementCollection> lines)
     {
-        if (lines is null)
-        {
-            throw new System.ArgumentNullException(nameof(lines));
-        }
+        if (lines is null) throw new ArgumentNullException(nameof(lines));
 
         _lines = new List<ElementCollection>(lines);
     }

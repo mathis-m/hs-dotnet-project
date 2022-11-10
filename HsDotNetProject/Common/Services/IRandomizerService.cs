@@ -1,4 +1,4 @@
-﻿namespace TruckDriver.Services;
+﻿namespace Common.Services;
 
 public interface IRandomizerService<TType>
 {

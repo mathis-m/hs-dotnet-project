@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-using UconsoleI.Components.TableComponent.Borders;
+﻿using UconsoleI.Components.TableComponent.Borders;
 using UconsoleI.Components.TextComponent;
 using UconsoleI.Elements;
 using UconsoleI.Rendering;
@@ -10,6 +9,12 @@ namespace UconsoleI.Components.TableComponent;
 public sealed class Table : Component
 {
     private readonly List<TableColumn> _columns;
+
+    public Table()
+    {
+        _columns = new List<TableColumn>();
+        Rows     = new TableRowCollection(this);
+    }
 
     public IReadOnlyList<TableColumn> Columns => _columns;
     public TableRowCollection Rows { get; }
@@ -36,43 +41,25 @@ public sealed class Table : Component
 
     internal bool PadRightCell { get; set; } = true;
 
-    public Table()
-    {
-        _columns = new List<TableColumn>();
-        Rows     = new TableRowCollection(this);
-    }
-
     public Table AddColumn(string column)
     {
-        if (column is null)
-        {
-            throw new ArgumentNullException(nameof(column));
-        }
+        if (column is null) throw new ArgumentNullException(nameof(column));
 
         return AddColumn(new TableColumn(column));
     }
 
     public Table AddColumn(string column, Justify justification)
     {
-        if (column is null)
-        {
-            throw new ArgumentNullException(nameof(column));
-        }
+        if (column is null) throw new ArgumentNullException(nameof(column));
 
         return AddColumn(new TableColumn(column, justification));
     }
 
     public Table AddColumn(TableColumn column)
     {
-        if (column is null)
-        {
-            throw new ArgumentNullException(nameof(column));
-        }
+        if (column is null) throw new ArgumentNullException(nameof(column));
 
-        if (Rows.Count > 0)
-        {
-            throw new InvalidOperationException("Cannot add new columns to table with existing rows.");
-        }
+        if (Rows.Count > 0) throw new InvalidOperationException("Cannot add new columns to table with existing rows.");
 
         _columns.Add(column);
         return this;
@@ -80,29 +67,20 @@ public sealed class Table : Component
 
     public Table AddRow(params string[] columns)
     {
-        if (columns is null)
-        {
-            throw new ArgumentNullException(nameof(columns));
-        }
+        if (columns is null) throw new ArgumentNullException(nameof(columns));
 
         return AddRow(columns.Select(column => new Text(column)).ToArray());
     }
-    
+
     public Table AddRow(params IComponent[] columns)
     {
-        if (columns is null)
-        {
-            throw new ArgumentNullException(nameof(columns));
-        }
-        return AddRow((IEnumerable<IComponent>)columns);
+        if (columns is null) throw new ArgumentNullException(nameof(columns));
+        return AddRow((IEnumerable<IComponent>) columns);
     }
 
     public Table AddRow(IEnumerable<IComponent> columns)
     {
-        if (columns is null)
-        {
-            throw new ArgumentNullException(nameof(columns));
-        }
+        if (columns is null) throw new ArgumentNullException(nameof(columns));
 
         Rows.Add(new TableRow(columns));
         return this;
@@ -110,10 +88,7 @@ public sealed class Table : Component
 
     protected override SizeConstraint CalculateSizeConstraint(UIContext context, int maxWidth)
     {
-        if (context is null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+        if (context is null) throw new ArgumentNullException(nameof(context));
 
         var calculator = new TableSizeCalculator(this, context);
 
@@ -127,10 +102,7 @@ public sealed class Table : Component
 
     protected override IEnumerable<Element> Render(UIContext context, int maxWidth)
     {
-        if (context is null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
+        if (context is null) throw new ArgumentNullException(nameof(context));
 
         var calculator = new TableSizeCalculator(this, context);
 
@@ -149,18 +121,12 @@ public sealed class Table : Component
     {
         var rows = new List<TableRow>();
 
-        if (ShowHeaders)
-        {
-            rows.Add(TableRow.Header(_columns.Select(c => c.Header)));
-        }
+        if (ShowHeaders) rows.Add(TableRow.Header(_columns.Select(c => c.Header)));
 
         rows.AddRange(Rows);
 
         var shouldRenderFooter = ShowFooters && _columns.Any(c => c.Footer != null);
-        if (shouldRenderFooter)
-        {
-            rows.Add(TableRow.Footer(_columns.Select(c => c.Footer ?? Text.Empty)));
-        }
+        if (shouldRenderFooter) rows.Add(TableRow.Footer(_columns.Select(c => c.Footer ?? Text.Empty)));
 
         return rows;
     }

@@ -2,7 +2,7 @@
 
 public sealed class MinimalDoubleHeadTableBorder : TableBorder
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override string GetPart(TableBorderPart part)
     {
         return part switch

@@ -31,11 +31,8 @@ public sealed class RenderPipeline
     {
         lock (_lock)
         {
-            var current = components;
-            for (var index = _hooks.Count - 1; index >= 0; index--)
-            {
-                current = _hooks[index].Process(context, current);
-            }
+            var current                                                     = components;
+            for (var index = _hooks.Count - 1; index >= 0; index--) current = _hooks[index].Process(context, current);
 
             return current;
         }

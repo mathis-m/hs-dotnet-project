@@ -1,13 +1,9 @@
 ﻿namespace UconsoleI.Internal.Text;
 
-
 internal sealed class StringBuffer : IDisposable
 {
-    private readonly StringReader _reader;
     private readonly int          _length;
-
-    public int Position { get; private set; }
-    public bool Eof => Position >= _length;
+    private readonly StringReader _reader;
 
     public StringBuffer(string text)
     {
@@ -19,6 +15,9 @@ internal sealed class StringBuffer : IDisposable
         Position = 0;
     }
 
+    public int Position { get; private set; }
+    public bool Eof => Position >= _length;
+
     public void Dispose()
     {
         _reader.Dispose();
@@ -26,22 +25,16 @@ internal sealed class StringBuffer : IDisposable
 
     public char Peek()
     {
-        if (Eof)
-        {
-            throw new InvalidOperationException("Tried to peek past the end of the text.");
-        }
+        if (Eof) throw new InvalidOperationException("Tried to peek past the end of the text.");
 
-        return (char)_reader.Peek();
+        return (char) _reader.Peek();
     }
 
     public char Read()
     {
-        if (Eof)
-        {
-            throw new InvalidOperationException("Tried to read past the end of the text.");
-        }
+        if (Eof) throw new InvalidOperationException("Tried to read past the end of the text.");
 
         Position++;
-        return (char)_reader.Read();
+        return (char) _reader.Read();
     }
 }

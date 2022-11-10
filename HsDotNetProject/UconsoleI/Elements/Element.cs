@@ -6,11 +6,6 @@ namespace UconsoleI.Elements;
 
 public record Element
 {
-    public static Element Control(string control)
-    {
-        return new Element(control, isControlCode: true);
-    }
-
     public Element(string text, bool? isNewLine = false, bool? isWhiteSpace = false, bool? isControlCode = false, Styling? styling = null)
     {
         Text          = text?.NormalizeNewLines() ?? throw new ArgumentNullException(nameof(text));
@@ -25,6 +20,11 @@ public record Element
     public bool IsWhiteSpace { get; init; }
     public bool IsControlCode { get; init; }
     public Styling Styling { get; init; }
+
+    public static Element Control(string control)
+    {
+        return new Element(control, isControlCode: true);
+    }
 
     public void Deconstruct(out string text, out bool isNewLine, out bool isWhiteSpace, out bool isControlCode, out Styling styling)
     {
@@ -47,10 +47,7 @@ public record Element
 
     public (Element First, Element? Second) Split(int offset)
     {
-        if (offset < 0)
-        {
-            return (this, null);
-        }
+        if (offset < 0) return (this, null);
 
         if (offset == 0)
             return (
@@ -58,10 +55,7 @@ public record Element
                 this
             );
 
-        if (offset >= CellCount())
-        {
-            return (this, null);
-        }
+        if (offset >= CellCount()) return (this, null);
 
         var index = 0;
 
@@ -70,10 +64,7 @@ public record Element
         {
             index++;
             accumulated += CellUtils.GetCellLength(character);
-            if (accumulated >= offset)
-            {
-                break;
-            }
+            if (accumulated >= offset) break;
         }
 
         if (index < 0 || Text.Length <= index)

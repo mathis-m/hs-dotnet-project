@@ -8,30 +8,21 @@ public static class ElementExtensions
 {
     public static int CellCount(this IEnumerable<Element> elements)
     {
-        if (elements is null)
-        {
-            throw new ArgumentNullException(nameof(elements));
-        }
+        if (elements is null) throw new ArgumentNullException(nameof(elements));
 
         return elements.Sum(element => element.CellCount());
     }
 
     public static List<ElementCollection> SplitLines(this IEnumerable<Element> elements)
     {
-        if (elements is null)
-        {
-            throw new ArgumentNullException(nameof(elements));
-        }
+        if (elements is null) throw new ArgumentNullException(nameof(elements));
 
         return elements.SplitLines(int.MaxValue);
     }
 
     public static List<ElementCollection> SplitLines(this IEnumerable<Element> elements, int maxWidth)
     {
-        if (elements is null)
-        {
-            throw new ArgumentNullException(nameof(elements));
-        }
+        if (elements is null) throw new ArgumentNullException(nameof(elements));
 
         var lines = new List<ElementCollection>();
         var line  = new ElementCollection();
@@ -56,10 +47,7 @@ public static class ElementExtensions
                 lines.Add(line);
                 line = new ElementCollection();
 
-                if (second != null)
-                {
-                    stack.Push(second);
-                }
+                if (second != null) stack.Push(second);
 
                 continue;
             }
@@ -84,12 +72,8 @@ public static class ElementExtensions
                 {
                     var parts = text.SplitLines();
                     if (parts.Length > 0)
-                    {
                         if (parts[0].Length > 0)
-                        {
                             line.Add(element with { Text = parts[0] });
-                        }
-                    }
 
                     if (parts.Length > 1)
                     {
@@ -113,10 +97,7 @@ public static class ElementExtensions
             }
         }
 
-        if (line.Count > 0)
-        {
-            lines.Add(line);
-        }
+        if (line.Count > 0) lines.Add(line);
 
         return lines;
     }
@@ -124,15 +105,9 @@ public static class ElementExtensions
 
     public static List<Element> SplitOverflow(this Element element, int maxWidth, Overflow? overflow = Overflow.Wrap)
     {
-        if (element is null)
-        {
-            throw new ArgumentNullException(nameof(element));
-        }
+        if (element is null) throw new ArgumentNullException(nameof(element));
 
-        if (element.CellCount() <= maxWidth)
-        {
-            return new List<Element>(1) { element };
-        }
+        if (element.CellCount() <= maxWidth) return new List<Element>(1) { element };
 
         var zeroMaxWidthRequested = Math.Max(0, maxWidth - 1) == 0;
 
@@ -155,10 +130,7 @@ public static class ElementExtensions
 
     public static IEnumerable<Element> Truncate(this IEnumerable<Element> segments, int maxWidth)
     {
-        if (segments is null)
-        {
-            throw new ArgumentNullException(nameof(segments));
-        }
+        if (segments is null) throw new ArgumentNullException(nameof(segments));
 
         var result = new List<Element>();
 
@@ -167,10 +139,7 @@ public static class ElementExtensions
         foreach (var segment in enumerable)
         {
             var segmentCellWidth = segment.CellCount();
-            if (totalWidth + segmentCellWidth > maxWidth)
-            {
-                break;
-            }
+            if (totalWidth + segmentCellWidth > maxWidth) break;
 
             result.Add(segment);
             totalWidth += segmentCellWidth;
@@ -179,10 +148,7 @@ public static class ElementExtensions
         if (result.Count == 0 && enumerable.Any())
         {
             var segment = enumerable.First().Truncate(maxWidth);
-            if (segment != null)
-            {
-                result.Add(segment);
-            }
+            if (segment != null) result.Add(segment);
         }
 
         return result;
@@ -190,32 +156,20 @@ public static class ElementExtensions
 
     public static Element? Truncate(this Element? segment, int maxWidth)
     {
-        if (segment is null)
-        {
-            return null;
-        }
+        if (segment is null) return null;
 
-        if (segment.CellCount() <= maxWidth)
-        {
-            return segment;
-        }
+        if (segment.CellCount() <= maxWidth) return segment;
 
         var builder = new StringBuilder();
         foreach (var character in segment.Text)
         {
             var accumulatedCellWidth = builder.ToString().GetCellWidth();
-            if (accumulatedCellWidth >= maxWidth)
-            {
-                break;
-            }
+            if (accumulatedCellWidth >= maxWidth) break;
 
             builder.Append(character);
         }
 
-        if (builder.Length == 0)
-        {
-            return null;
-        }
+        if (builder.Length == 0) return null;
 
         return segment with { Text = builder.ToString() };
     }

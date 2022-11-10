@@ -1,16 +1,9 @@
-﻿namespace VehicleAcquisition.Models.Trucks;
+﻿using VehicleAcquisition.Factories;
 
-public record RefrigeratedTruck(Size Size, int Age, Location Location) : Truck("Refrigerated truck", Size, Age, Location)
+namespace VehicleAcquisition.Models.Trucks;
+
+public record RefrigeratedTruck(Size Size, Age Age, Location Location) : Truck(TruckTypes.RefrigeratedTruck, Size, Age, Location)
 {
-    public override int MaxPayloadInTons => Size switch
-    {
-        Size.Small => 3,
-        Size.Medium => 4,
-        Size.Large => 5,
-        Size.ExtraLarge => 6,
-        _ => throw new ArgumentOutOfRangeException(nameof(Size)),
-    };
-
     protected override int BaseConsumptionPer100KmInL => Size switch
     {
         Size.Small => 14,

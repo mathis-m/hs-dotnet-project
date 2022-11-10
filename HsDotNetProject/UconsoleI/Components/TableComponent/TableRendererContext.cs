@@ -6,8 +6,24 @@ namespace UconsoleI.Components.TableComponent;
 
 public record TableRendererContext
 {
-    private readonly Table          _table;
     private readonly List<TableRow> _rows;
+    private readonly Table          _table;
+
+    public TableRendererContext(Table table, UIContext options, IEnumerable<TableRow> rows, int tableWidth, int maxWidth)
+    {
+        _table = table ?? throw new ArgumentNullException(nameof(table));
+        _rows  = new List<TableRow>(rows ?? Enumerable.Empty<TableRow>());
+
+        ShowBorder  = _table.Border.Visible;
+        HasRows     = Rows.Any(row => !row.IsHeader && !row.IsFooter);
+        HasFooters  = Rows.Any(column => column.IsFooter);
+        Border      = table.Border;
+        BorderStyle = table.BorderStyle ?? DefaultStylings.Plain;
+
+        TableWidth = tableWidth;
+        MaxWidth   = maxWidth;
+        Options    = options ?? throw new ArgumentNullException(nameof(options));
+    }
 
     public IReadOnlyList<TableRow> Rows => _rows;
 
@@ -31,20 +47,4 @@ public record TableRendererContext
     public TableTitle? Title => _table.Title;
     public TableTitle? Caption => _table.Caption;
     public Justify? Alignment => _table.Alignment;
-
-    public TableRendererContext(Table table, UIContext options, IEnumerable<TableRow> rows, int tableWidth, int maxWidth)
-    {
-        _table = table ?? throw new ArgumentNullException(nameof(table));
-        _rows  = new List<TableRow>(rows ?? Enumerable.Empty<TableRow>());
-
-        ShowBorder  = _table.Border.Visible;
-        HasRows     = Rows.Any(row => !row.IsHeader && !row.IsFooter);
-        HasFooters  = Rows.Any(column => column.IsFooter);
-        Border      = table.Border;
-        BorderStyle = table.BorderStyle ?? DefaultStylings.Plain;
-
-        TableWidth = tableWidth;
-        MaxWidth   = maxWidth;
-        Options    = options ?? throw new ArgumentNullException(nameof(options));
-    }
 }

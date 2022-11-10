@@ -1,4 +1,5 @@
-﻿using TruckDriver.Models;
+﻿using Common.Services;
+using TruckDriver.Models;
 
 namespace TruckDriver.Services;
 

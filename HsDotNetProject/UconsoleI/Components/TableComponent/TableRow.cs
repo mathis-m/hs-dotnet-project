@@ -3,15 +3,9 @@ using UconsoleI.Rendering;
 
 namespace UconsoleI.Components.TableComponent;
 
-public sealed class TableRow: IEnumerable<IComponent>
+public sealed class TableRow : IEnumerable<IComponent>
 {
     private readonly List<IComponent> _items;
-    public int Count => _items.Count;
-
-    internal bool IsHeader { get; }
-    internal bool IsFooter { get; }
-
-    public IComponent this[int index] => _items[index];
 
     public TableRow(IEnumerable<IComponent>? items)
         : this(items, false, false)
@@ -24,6 +18,23 @@ public sealed class TableRow: IEnumerable<IComponent>
 
         IsHeader = isHeader;
         IsFooter = isFooter;
+    }
+
+    public int Count => _items.Count;
+
+    internal bool IsHeader { get; }
+    internal bool IsFooter { get; }
+
+    public IComponent this[int index] => _items[index];
+
+    public IEnumerator<IComponent> GetEnumerator()
+    {
+        return _items.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 
     internal static TableRow Header(IEnumerable<IComponent> items)
@@ -43,15 +54,4 @@ public sealed class TableRow: IEnumerable<IComponent>
 
         _items.Add(item);
     }
-
-    public IEnumerator<IComponent> GetEnumerator()
-    {
-        return _items.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
 }

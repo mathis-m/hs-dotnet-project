@@ -6,9 +6,9 @@ public record Styling
 {
     public Styling(Color? color = null, Color? backgroundColor = null, Decoration? decoration = null)
     {
-        this.Color           = color ?? DefaultColors.Color;
-        this.BackgroundColor = backgroundColor ?? DefaultColors.BackgroundColor;
-        this.Decoration      = decoration ?? Decoration.None;
+        Color           = color ?? DefaultColors.Color;
+        BackgroundColor = backgroundColor ?? DefaultColors.BackgroundColor;
+        Decoration      = decoration ?? Decoration.None;
     }
 
     public Color Color { get; }

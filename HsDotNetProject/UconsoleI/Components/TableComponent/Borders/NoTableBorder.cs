@@ -1,6 +1,6 @@
 ﻿namespace UconsoleI.Components.TableComponent.Borders;
 
-public sealed class NoTableBorder: TableBorder
+public sealed class NoTableBorder : TableBorder
 {
     public override bool Visible => false;
 

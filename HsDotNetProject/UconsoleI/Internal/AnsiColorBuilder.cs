@@ -21,49 +21,40 @@ internal static class AnsiColorBuilder
 
     private static IEnumerable<byte> GetThreeBit(Color color, bool foreground)
     {
-        var number = color.ConsoleColorColor;
-        if (number == null || color.ConsoleColorColor >= 8)
-        {
-            number = (int)ConsoleColor.Black;
-        }
+        var number                                                 = color.ConsoleColorColor;
+        if (number == null || color.ConsoleColorColor >= 8) number = (int) ConsoleColor.Black;
 
         Debug.Assert(number >= 0 && number < 8, "Invalid range for 4-bit color");
 
         var mod = foreground ? 30 : 40;
-        return new byte[] { (byte)(number.Value + mod) };
+        return new[] { (byte) (number.Value + mod) };
     }
 
     private static IEnumerable<byte> GetFourBit(Color color, bool foreground)
     {
-        var number = color.ConsoleColorColor;
-        if (number == null || color.ConsoleColorColor >= 16)
-        {
-            number = (int)ConsoleColor.Black;
-        }
+        var number                                                  = color.ConsoleColorColor;
+        if (number == null || color.ConsoleColorColor >= 16) number = (int) ConsoleColor.Black;
 
         Debug.Assert(number >= 0 && number < 16, "Invalid range for 4-bit color");
 
-        var mod = number < 8 ? (foreground ? 30 : 40) : (foreground ? 82 : 92);
-        return new byte[] { (byte)(number.Value + mod) };
+        var mod = number < 8 ? foreground ? 30 : 40 : foreground ? 82 : 92;
+        return new[] { (byte) (number.Value + mod) };
     }
 
     private static IEnumerable<byte> GetEightBit(Color color, bool foreground)
     {
-        var number = color.ConsoleColorColor ?? (int)ConsoleColor.Black;
+        var number = color.ConsoleColorColor ?? (int) ConsoleColor.Black;
         Debug.Assert(number >= 0 && number <= 255, "Invalid range for 8-bit color");
 
-        var mod = foreground ? (byte)38 : (byte)48;
-        return new byte[] { mod, 5, (byte)number };
+        var mod = foreground ? (byte) 38 : (byte) 48;
+        return new byte[] { mod, 5, (byte) number };
     }
 
     private static IEnumerable<byte> GetTrueColor(Color color, bool foreground)
     {
-        if (color.ConsoleColorColor != null)
-        {
-            return GetEightBit(color, foreground);
-        }
+        if (color.ConsoleColorColor != null) return GetEightBit(color, foreground);
 
-        var mod = foreground ? (byte)38 : (byte)48;
+        var mod = foreground ? (byte) 38 : (byte) 48;
         return new byte[] { mod, 2, color.Red, color.Green, color.Blue };
     }
 }

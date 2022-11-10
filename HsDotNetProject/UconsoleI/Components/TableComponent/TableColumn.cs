@@ -1,20 +1,11 @@
 ﻿using UconsoleI.Components.TextComponent;
-using UconsoleI.Rendering;
 using UconsoleI.Extensions;
-using UconsoleI.Stylings;
+using UconsoleI.Rendering;
 
 namespace UconsoleI.Components.TableComponent;
 
 public sealed class TableColumn : IColumn
 {
-    public IComponent Header { get; set; }
-    public IComponent? Footer { get; set; }
-
-    public Justify? Alignment { get; set; }
-    public Padding? Padding { get; set; }
-    public bool NoWrap { get; set; }
-    public int? Width { get; set; }
-
     public TableColumn(string header, Justify? justification = null)
         : this(new Text(header).Overflow(Overflow.Ellipsis).Alignment(justification))
     {
@@ -29,4 +20,12 @@ public sealed class TableColumn : IColumn
         Alignment = null;
         Footer    = null;
     }
+
+    public IComponent Header { get; set; }
+    public IComponent? Footer { get; set; }
+
+    public Justify? Alignment { get; set; }
+    public Padding? Padding { get; set; }
+    public bool NoWrap { get; set; }
+    public int? Width { get; set; }
 }

@@ -6,7 +6,7 @@ internal static class TextWriterExtensions
     {
         try
         {
-            return writer == System.Console.Out;
+            return writer == Console.Out;
         }
         catch
         {
@@ -18,7 +18,7 @@ internal static class TextWriterExtensions
     {
         try
         {
-            return writer == System.Console.Error;
+            return writer == Console.Error;
         }
         catch
         {

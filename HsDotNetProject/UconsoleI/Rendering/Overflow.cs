@@ -2,7 +2,7 @@
 
 public enum Overflow
 {
-    Wrap = 0,
-    Hidden = 1,
+    Wrap     = 0,
+    Hidden   = 1,
     Ellipsis = 2,
 }

@@ -13,10 +13,7 @@ internal static class CellUtils
 
     public static int GetCellLength(char unicodeChar)
     {
-        if (unicodeChar == '\n')
-        {
-            return 1;
-        }
+        if (unicodeChar == '\n') return 1;
 
         return UnicodeCharCache[unicodeChar] ??= UnicodeCalculator.GetWidth(unicodeChar);
     }

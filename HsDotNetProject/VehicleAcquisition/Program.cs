@@ -1,21 +1,16 @@
 ﻿using Common.Extensions;
 using VehicleAcquisition.Models;
 using VehicleAcquisition.Models.Trucks;
+using VehicleAcquisition.Services;
 
 var esslingen = new Location("Esslingen");
 var rom       = new Location("Rom");
 var amsterdam = new Location("Amsterdam");
 var istanbul  = new Location("Istanbul");
 
-var trucks = new List<ITruck>
-{
-    new RefrigeratedTruck(Size.Small, 5, esslingen),
-    new FlatbedTruck(Size.Medium, 7, esslingen),
-    new FlatbedTruck(Size.Large, 0, rom),
-    new TankerTruck(Size.Small, 1, amsterdam),
-    new RefrigeratedTruck(Size.ExtraLarge, 3, istanbul),
-};
-
+var trucks      = new List<ITruck>();
+var rndmService = new TruckRandomizerService(new TruckAgeRandomizerService(), new LocationRandomizerService(), new TruckSizeRandomizerService());
+for (var i = 0; i < 10; i++) trucks.Add(await rndmService.NextAsync());
 trucks.Print();
 
 Console.ReadLine();

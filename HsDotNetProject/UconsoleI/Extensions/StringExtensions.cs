@@ -15,10 +15,7 @@ internal static class StringExtensions
         text =   text?.Replace("\r\n", "\n");
         text ??= string.Empty;
 
-        if (native && !AlreadyNormalized)
-        {
-            text = text.Replace("\n", Environment.NewLine);
-        }
+        if (native && !AlreadyNormalized) text = text.Replace("\n", Environment.NewLine);
 
         return text;
     }
@@ -63,10 +60,7 @@ internal static class StringExtensions
             while (!reader.Eof)
             {
                 var current = reader.Peek();
-                if (!criteria(current))
-                {
-                    break;
-                }
+                if (!criteria(current)) break;
 
                 buffer.Append(reader.Read());
             }
@@ -82,10 +76,7 @@ internal static class StringExtensions
                 if (char.IsWhiteSpace(current))
                 {
                     var x = Read(reader, char.IsWhiteSpace);
-                    if (options != StringSplitOptions.RemoveEmptyEntries)
-                    {
-                        result.Add(x);
-                    }
+                    if (options != StringSplitOptions.RemoveEmptyEntries) result.Add(x);
                 }
                 else
                 {

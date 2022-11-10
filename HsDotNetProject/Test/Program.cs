@@ -6,7 +6,6 @@ using UconsoleI.Components.TextComponent;
 using UconsoleI.Extensions;
 using UconsoleI.Rendering;
 using UconsoleI.Stylings;
-using UconsoleI.Stylings.Coloring;
 using UconsoleI.UI;
 
 var table = new Table
@@ -17,7 +16,7 @@ var table = new Table
 
 // Add some columns test
 table.AddColumn(new TableColumn(new Text("#")).Padding(new Padding(0, 1)));
-table.AddColumn(new TableColumn(new Text("Ware", new Styling(decoration:Decoration.Bold | Decoration.SlowBlink))).Padding(new Padding(0, 1)));
+table.AddColumn(new TableColumn(new Text("Ware", new Styling(decoration: Decoration.Bold | Decoration.SlowBlink))).Padding(new Padding(0, 1)));
 table.AddColumn(new TableColumn(new Text("Typ")).Padding(new Padding(0, 1)));
 table.AddColumn(new TableColumn(new Text("Startort")).Padding(new Padding(0, 1)));
 table.AddColumn(new TableColumn(new Text("Zielort")).Padding(new Padding(0, 1)));

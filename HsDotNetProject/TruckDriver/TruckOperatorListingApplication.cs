@@ -1,6 +1,6 @@
 ﻿using Common.Extensions;
+using Common.Services;
 using TruckDriver.Models;
-using TruckDriver.Services;
 
 namespace TruckDriver;
 

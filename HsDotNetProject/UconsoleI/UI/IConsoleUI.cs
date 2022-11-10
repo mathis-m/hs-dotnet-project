@@ -41,10 +41,7 @@ internal sealed class ConsoleUICursor : IConsoleCursor
 
     public void Move(CursorDirection direction, int steps)
     {
-        if (steps == 0)
-        {
-            return;
-        }
+        if (steps == 0) return;
 
         switch (direction)
         {
@@ -85,11 +82,6 @@ internal sealed class ConsoleUIFacade : IConsoleUI
 {
     private readonly object _renderLock;
 
-    public Profile Profile { get; }
-    public IConsoleCursor Cursor { get; }
-    public IAnsiConsoleInput Input { get; }
-    public RenderPipeline Pipeline { get; }
-
     public ConsoleUIFacade(Profile profile)
     {
         _renderLock = new object();
@@ -100,6 +92,11 @@ internal sealed class ConsoleUIFacade : IConsoleUI
         Cursor   = new ConsoleUICursor(this);
     }
 
+    public Profile Profile { get; }
+    public IAnsiConsoleInput Input { get; }
+    public IConsoleCursor Cursor { get; }
+    public RenderPipeline Pipeline { get; }
+
     public void Clear(bool home)
     {
         lock (_renderLock)
@@ -107,10 +104,7 @@ internal sealed class ConsoleUIFacade : IConsoleUI
             Write(new ControlCode(AnsiSequences.ED(2)));
             Write(new ControlCode(AnsiSequences.ED(3)));
 
-            if (home)
-            {
-                Write(new ControlCode(AnsiSequences.CUP(1, 1)));
-            }
+            if (home) Write(new ControlCode(AnsiSequences.CUP(1, 1)));
         }
     }
 
@@ -121,10 +115,7 @@ internal sealed class ConsoleUIFacade : IConsoleUI
             var elements   = new List<Element>();
             var context    = new UIContext(Profile.ColorSystem);
             var components = Pipeline.Process(context, new[] { component });
-            foreach (var comp in components)
-            {
-                elements.AddRange(comp.Render(context, Profile.Width));
-            }
+            foreach (var comp in components) elements.AddRange(comp.Render(context, Profile.Width));
 
             var builder = new StringBuilder();
             foreach (var element in elements)
@@ -138,15 +129,9 @@ internal sealed class ConsoleUIFacade : IConsoleUI
                 var parts = element.Text.NormalizeNewLines().Split(new[] { '\n' });
                 foreach (var (_, _, isLast, currentItem) in parts.EnumerateWithContext())
                 {
-                    if (!string.IsNullOrEmpty(currentItem))
-                    {
-                        builder.Append(BuildAnsiText(Profile, currentItem, element.Styling));
-                    }
+                    if (!string.IsNullOrEmpty(currentItem)) builder.Append(BuildAnsiText(Profile, currentItem, element.Styling));
 
-                    if (!isLast)
-                    {
-                        builder.Append(Environment.NewLine);
-                    }
+                    if (!isLast) builder.Append(Environment.NewLine);
                 }
             }
 
@@ -161,15 +146,11 @@ internal sealed class ConsoleUIFacade : IConsoleUI
 
     private static string BuildAnsiText(Profile profile, string text, Styling style)
     {
-        if (style is null)
-        {
-            throw new ArgumentNullException(nameof(style));
-        }
+        if (style is null) throw new ArgumentNullException(nameof(style));
 
         var codes = AnsiDecorationBuilder.GetAnsiCodes(style.Decoration);
 
         if (style.Color != DefaultColors.Color)
-        {
             codes = codes.Concat(
                 AnsiColorBuilder.GetAnsiCodes(
                     profile.ColorSystem,
@@ -177,22 +158,16 @@ internal sealed class ConsoleUIFacade : IConsoleUI
                     true
                 )
             );
-        }
 
         if (style.BackgroundColor != DefaultColors.BackgroundColor)
-        {
             codes = codes.Concat(
                 AnsiColorBuilder.GetAnsiCodes(
                     profile.ColorSystem,
                     style.BackgroundColor,
                     false));
-        }
 
         var result = codes.ToArray();
-        if (result.Length == 0)
-        {
-            return text;
-        }
+        if (result.Length == 0) return text;
 
         var ansi = result.Length > 0
             ? $"{AnsiSequences.SGR(result)}{text}{AnsiSequences.SGR(0)}"
@@ -213,42 +188,27 @@ internal sealed class DefaultInput : IAnsiConsoleInput
 
     public bool IsKeyAvailable()
     {
-        if (!_profile.Interactive)
-        {
-            throw new InvalidOperationException("Failed to read input in non-interactive mode.");
-        }
+        if (!_profile.Interactive) throw new InvalidOperationException("Failed to read input in non-interactive mode.");
 
-        return System.Console.KeyAvailable;
+        return Console.KeyAvailable;
     }
 
     public ConsoleKeyInfo? ReadKey(bool intercept)
     {
-        if (!_profile.Interactive)
-        {
-            throw new InvalidOperationException("Failed to read input in non-interactive mode.");
-        }
+        if (!_profile.Interactive) throw new InvalidOperationException("Failed to read input in non-interactive mode.");
 
-        return System.Console.ReadKey(intercept);
+        return Console.ReadKey(intercept);
     }
 
     public async Task<ConsoleKeyInfo?> ReadKeyAsync(bool intercept, CancellationToken cancellationToken)
     {
-        if (!_profile.Interactive)
-        {
-            throw new InvalidOperationException("Failed to read input in non-interactive mode.");
-        }
+        if (!_profile.Interactive) throw new InvalidOperationException("Failed to read input in non-interactive mode.");
 
         while (true)
         {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                return null;
-            }
+            if (cancellationToken.IsCancellationRequested) return null;
 
-            if (System.Console.KeyAvailable)
-            {
-                break;
-            }
+            if (Console.KeyAvailable) break;
 
             await Task.Delay(5, cancellationToken).ConfigureAwait(false);
         }
@@ -266,9 +226,6 @@ public interface IAnsiConsoleInput
 
 public static class ConsoleUI
 {
-    public static bool Created { get; set; }
-
-
     private static Lazy<IConsoleUI> _console = new(
         () =>
         {
@@ -279,11 +236,7 @@ public static class ConsoleUI
             return console;
         });
 
-
-    public static IConsoleUI Create(ConsoleUISettings settings)
-    {
-        return ConsoleUIFactory.Create(settings);
-    }
+    public static bool Created { get; set; }
 
     public static IConsoleUI Console
     {
@@ -294,6 +247,12 @@ public static class ConsoleUI
 
             Created = true;
         }
+    }
+
+
+    public static IConsoleUI Create(ConsoleUISettings settings)
+    {
+        return ConsoleUIFactory.Create(settings);
     }
 
 
@@ -312,10 +271,7 @@ public static class ConsoleUIFactory
         if (settings is null) throw new ArgumentNullException(nameof(settings));
 
         var output = settings.Out ?? new ConsoleUiOutput(Console.Out);
-        if (output.Writer == null)
-        {
-            throw new InvalidOperationException("Output writer was null");
-        }
+        if (output.Writer == null) throw new InvalidOperationException("Output writer was null");
 
         var encoding = output.Writer.IsStandardOut() || output.Writer.IsStandardError()
             ? Console.OutputEncoding
@@ -341,10 +297,16 @@ public static class ConsoleUIFactory
 
 public sealed class Profile
 {
-    private IConsoleUIOutput _out;
     private Encoding         _encoding;
-    private int?             _width;
     private int?             _height;
+    private IConsoleUIOutput _out;
+    private int?             _width;
+
+    public Profile(IConsoleUIOutput @out, Encoding encoding)
+    {
+        _out      = @out ?? throw new ArgumentNullException(nameof(@out));
+        _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
+    }
 
     public IConsoleUIOutput Out
     {
@@ -365,10 +327,7 @@ public sealed class Profile
         get => _encoding;
         set
         {
-            if (value == null)
-            {
-                throw new InvalidOperationException("Encoding cannot be null");
-            }
+            if (value == null) throw new InvalidOperationException("Encoding cannot be null");
 
             _out.SetEncoding(value);
             _encoding = value;
@@ -380,10 +339,7 @@ public sealed class Profile
         get => _width ?? _out.Width;
         set
         {
-            if (value <= 0)
-            {
-                throw new InvalidOperationException("Console width must be greater than zero");
-            }
+            if (value <= 0) throw new InvalidOperationException("Console width must be greater than zero");
 
             _width = value;
         }
@@ -394,10 +350,7 @@ public sealed class Profile
         get => _height ?? _out.Height;
         set
         {
-            if (value <= 0)
-            {
-                throw new InvalidOperationException("Console height must be greater than zero");
-            }
+            if (value <= 0) throw new InvalidOperationException("Console height must be greater than zero");
 
             _height = value;
         }
@@ -406,12 +359,6 @@ public sealed class Profile
     public ColorSystem ColorSystem { get; set; }
 
     public bool Interactive { get; set; }
-
-    public Profile(IConsoleUIOutput @out, Encoding encoding)
-    {
-        _out      = @out ?? throw new ArgumentNullException(nameof(@out));
-        _encoding = encoding ?? throw new ArgumentNullException(nameof(encoding));
-    }
 }
 
 internal static class ColorSystemDetector
@@ -442,10 +389,7 @@ internal static class ColorSystemDetector
         major = 0;
         build = 0;
 
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            return false;
-        }
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return false;
 
         var version = Environment.OSVersion.Version;
         major = version.Major;
@@ -458,21 +402,20 @@ public sealed record ConsoleUISettings(ColorSystemSupport ColorSystem = ColorSys
 
 public sealed class ConsoleUiOutput : IConsoleUIOutput
 {
+    public ConsoleUiOutput(TextWriter writer)
+    {
+        Writer = writer ?? throw new ArgumentNullException(nameof(writer));
+    }
+
     public TextWriter Writer { get; }
 
     public bool IsTerminal
     {
         get
         {
-            if (Writer.IsStandardOut())
-            {
-                return !System.Console.IsOutputRedirected;
-            }
+            if (Writer.IsStandardOut()) return !Console.IsOutputRedirected;
 
-            if (Writer.IsStandardError())
-            {
-                return !System.Console.IsErrorRedirected;
-            }
+            if (Writer.IsStandardError()) return !Console.IsErrorRedirected;
 
             return false;
         }
@@ -482,17 +425,9 @@ public sealed class ConsoleUiOutput : IConsoleUIOutput
 
     public int Height => ConsoleHelper.GetSafeHeight();
 
-    public ConsoleUiOutput(TextWriter writer)
-    {
-        Writer = writer ?? throw new ArgumentNullException(nameof(writer));
-    }
-
     public void SetEncoding(Encoding encoding)
     {
-        if (Writer.IsStandardOut() || Writer.IsStandardError())
-        {
-            System.Console.OutputEncoding = encoding;
-        }
+        if (Writer.IsStandardOut() || Writer.IsStandardError()) Console.OutputEncoding = encoding;
     }
 }
 
