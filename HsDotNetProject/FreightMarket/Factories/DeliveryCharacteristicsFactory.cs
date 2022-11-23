@@ -1,6 +1,4 @@
-﻿using Common.Models;
-using FreightMarket.Models;
-using VehicleAcquisition.Factories;
+﻿using FreightMarket.Models;
 
 namespace FreightMarket.Factories;
 

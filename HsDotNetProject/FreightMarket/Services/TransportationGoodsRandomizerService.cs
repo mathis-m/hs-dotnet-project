@@ -8,15 +8,13 @@ namespace FreightMarket.Services;
 
 public class TransportationGoodsRandomizerService : BaseRandomizerService<TransportationGoods>
 {
-    private readonly IRandomizerService<GoodTypes> _goodTypeRandomizerService;
+    private static readonly Random                        WeightRandom = new();
+    private readonly        IRandomizerService<GoodTypes> _goodTypeRandomizerService;
 
     public TransportationGoodsRandomizerService(IRandomizerService<GoodTypes> goodTypeRandomizerService)
     {
         _goodTypeRandomizerService = goodTypeRandomizerService;
     }
-
-
-    private static readonly Random WeightRandom = new();
 
     public override async Task<TransportationGoods> NextAsync()
     {

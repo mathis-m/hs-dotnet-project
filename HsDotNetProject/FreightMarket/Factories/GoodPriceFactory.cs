@@ -6,6 +6,7 @@ namespace FreightMarket.Factories;
 public static class GoodPriceFactory
 {
     private static readonly Currency Eur = new("EUR", "€");
+
     public static GoodPrice FromGoodType(GoodTypes type)
     {
         return type switch

@@ -17,6 +17,7 @@ public class GoodTypeRandomizerService : BaseRandomizerService<GoodTypes>
         GoodTypes.FuelOil,
         GoodTypes.Gasoline,
     };
+
     public override Task<GoodTypes> NextAsync()
     {
         return Task.FromResult(GetRandomItem(AvailableTypes));

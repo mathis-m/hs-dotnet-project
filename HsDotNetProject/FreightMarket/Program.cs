@@ -2,10 +2,8 @@
 using FreightMarket.Models;
 using FreightMarket.Services;
 using Microsoft.Extensions.DependencyInjection;
-using VehicleAcquisition.Factories;
 using VehicleAcquisition.Models;
 using VehicleAcquisition.Services;
-
 
 var services = new ServiceCollection();
 
@@ -28,9 +26,6 @@ var transportationTenderRandomizerService = serviceProvider.GetRequiredService<I
 var tenderPrinter                         = serviceProvider.GetRequiredService<ITenderPrinter>();
 
 var tenders = new List<TransportationTender>();
-for (var i = 0; i < 10; i++)
-{
-    tenders.Add(await transportationTenderRandomizerService.NextAsync());
-}
+for (var i = 0; i < 10; i++) tenders.Add(await transportationTenderRandomizerService.NextAsync());
 
 tenderPrinter.PrintTenders(tenders);

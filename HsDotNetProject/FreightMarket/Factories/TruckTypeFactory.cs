@@ -18,7 +18,7 @@ public static class TruckTypeFactory
             GoodTypes.CrudeOil => TruckTypes.TankerTruck,
             GoodTypes.FuelOil => TruckTypes.TankerTruck,
             GoodTypes.Gasoline => TruckTypes.TankerTruck,
-            _ => throw new ArgumentOutOfRangeException(nameof(goodType), goodType, null)
+            _ => throw new ArgumentOutOfRangeException(nameof(goodType), goodType, null),
         };
     }
 }

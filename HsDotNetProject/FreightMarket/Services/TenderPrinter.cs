@@ -39,7 +39,7 @@ public class TenderPrinter : ITenderPrinter
 
         var table = new Table
         {
-            Border = TableBorderTypes.Square,
+            Border    = TableBorderTypes.Square,
             Alignment = Justify.Center,
         };
 

@@ -7,9 +7,9 @@ namespace FreightMarket.Services;
 
 public class TransportationTenderRandomizerService : BaseRandomizerService<TransportationTender>
 {
-    private readonly IRandomizerService<TransportationGoods> _transportationGoodsRandomizerService;
-    private readonly IRandomizerService<Location>            _locationRandomizerService;
     private readonly IDeliveryCalculator                     _deliveryCalculator;
+    private readonly IRandomizerService<Location>            _locationRandomizerService;
+    private readonly IRandomizerService<TransportationGoods> _transportationGoodsRandomizerService;
 
     public TransportationTenderRandomizerService(IRandomizerService<TransportationGoods> transportationGoodsRandomizerService,
         IRandomizerService<Location> locationRandomizerService, IDeliveryCalculator deliveryCalculator)
@@ -26,16 +26,16 @@ public class TransportationTenderRandomizerService : BaseRandomizerService<Trans
         var startLocation       = await _locationRandomizerService.NextAsync();
         var targetLocation      = await _locationRandomizerService.NextAsync();
 
-        var deliveryCharacteristics        = DeliveryCharacteristicsFactory.FromGoodType(transportationGoods.Type);
+        var deliveryCharacteristics = DeliveryCharacteristicsFactory.FromGoodType(transportationGoods.Type);
         var (deliveryDate, durationInDays) = _deliveryCalculator.CalculateDeliveryDateFromNow(deliveryCharacteristics);
 
         var tenderCompensation = TenderCompensationFactory.From(transportationGoods, durationInDays, deliveryCharacteristics);
         var tenderPenalty      = TenderPenaltyFactory.FromCompensation(tenderCompensation);
 
         return new TransportationTender(
-            transportationGoods, 
-            startLocation, 
-            targetLocation, 
+            transportationGoods,
+            startLocation,
+            targetLocation,
             deliveryDate,
             tenderCompensation,
             tenderPenalty

@@ -30,9 +30,8 @@ public static class EnumerableExtensions
         if (source is null) throw new ArgumentNullException(nameof(source));
         var enumerable = source as T[] ?? source.ToArray();
         while (count-- > 0)
-        {
-            foreach (var item in enumerable) yield return item;
-        }
+            foreach (var item in enumerable)
+                yield return item;
     }
 
     public static int IndexOf<T>(this IEnumerable<T> source, T item)

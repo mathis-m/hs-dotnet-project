@@ -9,11 +9,11 @@ public static class DefaultElements
 
     public static Element Padding(int size)
     {
-        return new(new string(' ', size));
+        return new Element(new string(' ', size));
     }
 
     public static Element Control(string control)
     {
-        return new(control, styling: DefaultStylings.Plain, isControlCode: true);
+        return new Element(control, styling: DefaultStylings.Plain, isControlCode: true);
     }
 }
