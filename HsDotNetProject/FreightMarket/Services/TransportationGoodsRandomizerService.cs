@@ -8,8 +8,9 @@ namespace FreightMarket.Services;
 
 public class TransportationGoodsRandomizerService : BaseRandomizerService<TransportationGoods>
 {
-    private static readonly Random                        WeightRandom = new();
-    private readonly        IRandomizerService<GoodTypes> _goodTypeRandomizerService;
+    private static readonly Random WeightRandom = new();
+
+    private readonly IRandomizerService<GoodTypes> _goodTypeRandomizerService;
 
     public TransportationGoodsRandomizerService(IRandomizerService<GoodTypes> goodTypeRandomizerService)
     {
