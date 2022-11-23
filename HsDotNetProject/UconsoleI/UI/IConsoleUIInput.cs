@@ -1,6 +1,6 @@
 ﻿namespace UconsoleI.UI;
 
-public interface IAnsiConsoleInput
+public interface IConsoleUIInput
 {
     bool IsKeyAvailable();
     ConsoleKeyInfo? ReadKey(bool intercept);

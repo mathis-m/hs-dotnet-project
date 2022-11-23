@@ -1,4 +1,5 @@
 ﻿using UconsoleI.Extensions;
+using UconsoleI.Internal;
 
 namespace UconsoleI.UI;
 
@@ -28,7 +29,8 @@ public static class ConsoleUIFactory
         };
 
         return new ConsoleUIFacade(
-            profile
+            profile,
+            settings.ExclusivityMode ?? new DefaultExclusivityMode()
         );
     }
 }

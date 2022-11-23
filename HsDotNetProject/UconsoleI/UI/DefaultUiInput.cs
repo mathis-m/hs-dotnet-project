@@ -1,10 +1,10 @@
 ﻿namespace UconsoleI.UI;
 
-internal sealed class DefaultInput : IAnsiConsoleInput
+internal sealed class DefaultUiInput : IConsoleUIInput
 {
     private readonly Profile _profile;
 
-    public DefaultInput(Profile profile)
+    public DefaultUiInput(Profile profile)
     {
         _profile = profile ?? throw new ArgumentNullException(nameof(profile));
     }

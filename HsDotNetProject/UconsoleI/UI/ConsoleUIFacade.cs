@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using UconsoleI.Components.ControlCodeComponent;
+using UconsoleI.Components.TextComponent;
 using UconsoleI.Elements;
 using UconsoleI.Extensions;
 using UconsoleI.Internal;
@@ -13,22 +14,25 @@ internal sealed class ConsoleUIFacade : IConsoleUI
 {
     private readonly object _renderLock;
 
-    public ConsoleUIFacade(Profile profile)
+    public ConsoleUIFacade(Profile profile, IExclusivityMode exclusivityMode)
     {
         _renderLock = new object();
 
-        Profile  = profile ?? throw new ArgumentNullException(nameof(profile));
-        Input    = new DefaultInput(Profile);
-        Pipeline = new RenderPipeline();
-        Cursor   = new ConsoleUICursor(this);
+        Profile         = profile ?? throw new ArgumentNullException(nameof(profile));
+        Input           = new DefaultUiInput(Profile);
+        Pipeline        = new RenderPipeline();
+        Cursor          = new ConsoleUICursor(this);
+        ExclusivityMode = exclusivityMode;
     }
 
     public Profile Profile { get; }
-    public IAnsiConsoleInput Input { get; }
+
+    public IExclusivityMode ExclusivityMode { get; }
+    public IConsoleUIInput Input { get; }
     public IConsoleCursor Cursor { get; }
     public RenderPipeline Pipeline { get; }
 
-    public void Clear(bool home)
+    public void Clear(bool home = true)
     {
         lock (_renderLock)
         {
@@ -74,6 +78,10 @@ internal sealed class ConsoleUIFacade : IConsoleUI
         }
     }
 
+    public void Write(string text, Styling? style = null)
+    {
+        Write(new Text(text, style));
+    }
 
     private static string BuildAnsiText(Profile profile, string text, Styling style)
     {

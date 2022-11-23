@@ -1,4 +1,6 @@
-﻿using UconsoleI.Rendering;
+﻿using UconsoleI.Extensions;
+using UconsoleI.Prompt;
+using UconsoleI.Rendering;
 
 namespace UconsoleI.UI;
 
@@ -39,5 +41,34 @@ public static class ConsoleUI
         if (component is null) throw new ArgumentNullException(nameof(component));
 
         Console.Write(component);
+    }
+
+    public static void WriteLine()
+    {
+        Console.WriteLine();
+    }
+
+    public static void WriteLine(string value)
+    {
+        Console.WriteLine(value);
+    }
+
+    public static T Prompt<T>(IPrompt<T> prompt)
+    {
+        if (prompt is null) throw new ArgumentNullException(nameof(prompt));
+
+        return prompt.Show(Console);
+    }
+
+    public static T Ask<T>(string prompt)
+    {
+        return new TextPrompt<T>(prompt).Show(Console);
+    }
+
+    public static T Ask<T>(string prompt, T defaultValue)
+    {
+        return new TextPrompt<T>(prompt)
+            .DefaultValue(defaultValue)
+            .Show(Console);
     }
 }

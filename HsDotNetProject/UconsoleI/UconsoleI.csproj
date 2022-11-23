@@ -15,7 +15,7 @@
     <Folder Include="Components\ParagraphComponent\" />
     <Folder Include="Components\TextComponent\" />
     <Folder Include="Internal\Text\" />
-    <Folder Include="UI\" />
+    <Folder Include="Prompt\" />
   </ItemGroup>
 
 </Project>
