@@ -2,8 +2,8 @@
 
 namespace FreightMarket.Models;
 
-public record TenderPenalty(int Value, Currency Currency)
+public record TenderPenalty(double Value, Currency Currency)
 {
-    public string FormattedValueWithIsoCode => $"{Value} {Currency.IsoCode}";
-    public string FormattedValueWithSymbol => $"{Value} {Currency.Symbol}";
+    public string FormattedValueWithIsoCode => $"{Math.Round(Value, 2)} {Currency.IsoCode}";
+    public string FormattedValueWithSymbol => $"{Math.Round(Value, 2)} {Currency.Symbol}";
 }
