@@ -16,8 +16,17 @@ public class TruckBoughtReducer : IReducerT<Truck>
 
         var derivedOwnedTrucks = new List<Truck>(currentState.CompanyState.OwnedTrucks) { truck };
 
+        var derivedAccountBalance = currentState.CompanyState.AccountBalance with
+        {
+            Balance = currentState.CompanyState.AccountBalance.Balance - truck.Price.Value,
+        };
+
         var derivedSimulationState = currentState.SimulationState with { AvailableTrucks = derivedAvailableTrucks };
-        var derivedCompanyState    = currentState.CompanyState with { OwnedTrucks = derivedOwnedTrucks };
+        var derivedCompanyState = currentState.CompanyState with
+        {
+            OwnedTrucks = derivedOwnedTrucks,
+            AccountBalance = derivedAccountBalance,
+        };
 
         return currentState with
         {

@@ -25,7 +25,7 @@ public class TextPrompt<T> : IPrompt<T>
     public string InvalidChoiceMessage { get; set; } = "Please select one of the available options";
     public bool ShowDefaultValue { get; set; } = true;
     public bool ShowChoices { get; set; } = true;
-    public List<T> Choices { get; } = new();
+    public List<T> Choices { get; init; } = new();
     public Styling PromptStyling { get; set; }
     public Func<T, string>? Converter { get; set; } = TypeConverterHelper.ConvertToString;
     internal DefaultPromptValue<T>? DefaultValue { get; set; }

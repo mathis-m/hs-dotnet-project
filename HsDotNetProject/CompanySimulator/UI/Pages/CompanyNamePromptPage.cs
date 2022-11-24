@@ -2,7 +2,7 @@
 using CompanySimulator.State.Actions;
 using UconsoleI.UI;
 
-namespace CompanySimulator.UI.MainMenu;
+namespace CompanySimulator.UI.Pages;
 
 public class CompanyNamePromptPage : IPage
 {
@@ -17,6 +17,6 @@ public class CompanyNamePromptPage : IPage
     {
         var companyName = ConsoleUI.Ask<string>("What is your company name?");
         _stateManager.DispatchAction(new ChangeCompanyNameAction(companyName));
-        _stateManager.DispatchAction(new DisplayPageAction(Pages.MainMenu));
+        _stateManager.DispatchAction(new DisplayPageAction(State.Pages.MainMenu));
     }
 }

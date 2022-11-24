@@ -3,7 +3,7 @@ using CompanySimulator.Factories;
 using CompanySimulator.State;
 using CompanySimulator.State.Reducers;
 using CompanySimulator.UI;
-using CompanySimulator.UI.MainMenu;
+using CompanySimulator.UI.Pages;
 using FreightMarket.Models;
 using FreightMarket.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -104,6 +104,9 @@ internal class Program
         services
             .AddSingleton<PageChangedReducer>()
             .AddSingleton<CompanyNameChangedReducer>()
+            .AddSingleton<DriverHiredReducer>()
+            .AddSingleton<TenderAcceptedReducer>()
+            .AddSingleton<RoundEndedReducer>()
             .AddSingleton<TruckBoughtReducer>();
     }
 
@@ -111,6 +114,9 @@ internal class Program
     {
         services
             .AddSingleton<CompanyNamePromptPage>()
+            .AddSingleton<BuyTruckPage>()
+            .AddSingleton<HireDriverPage>()
+            .AddSingleton<AcceptTenderPage>()
             .AddSingleton<MainMenuPage>();
     }
 

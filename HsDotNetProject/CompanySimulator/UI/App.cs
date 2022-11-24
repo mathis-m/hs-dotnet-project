@@ -1,5 +1,5 @@
 ﻿using CompanySimulator.State;
-using CompanySimulator.UI.MainMenu;
+using CompanySimulator.UI.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using UconsoleI.UI;
 
@@ -7,10 +7,13 @@ namespace CompanySimulator.UI;
 
 public class App : IStateListener
 {
-    private readonly Dictionary<Pages, Type> _pageMap = new()
+    private readonly Dictionary<State.Pages, Type> _pageMap = new()
     {
-        { Pages.MainMenu, typeof(MainMenuPage) },
-        { Pages.CompanyNamePrompter, typeof(CompanyNamePromptPage) },
+        { State.Pages.MainMenu, typeof(MainMenuPage) },
+        { State.Pages.CompanyNamePrompter, typeof(CompanyNamePromptPage) },
+        { State.Pages.BuyTruck, typeof(BuyTruckPage) },
+        { State.Pages.HireDriver, typeof(HireDriverPage) },
+        { State.Pages.AcceptTender, typeof(AcceptTenderPage) },
     };
 
     private readonly IServiceProvider _serviceProvider;
@@ -29,7 +32,7 @@ public class App : IStateListener
         if (oldState.ApplicationState.CurrentPage != newPage) RenderPage(newPage);
     }
 
-    private void RenderPage(Pages page)
+    private void RenderPage(State.Pages page)
     {
         var pageType = _pageMap[page];
         if (pageType == null)

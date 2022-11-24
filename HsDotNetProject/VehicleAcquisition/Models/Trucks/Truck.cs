@@ -28,7 +28,7 @@ public abstract record Truck(TruckTypes TruckType, Size Size, Age Age, Location 
 
     private int ConsumptionCorrectionForAge => Age.AgeInYears / 3;
 
-    private string FormattedAge => Age.AgeInYears switch
+    public string FormattedAge => Age.AgeInYears switch
     {
         0 => "-new-",
         1 => "1 year",

@@ -4,4 +4,7 @@ public enum Pages
 {
     CompanyNamePrompter,
     MainMenu,
+    BuyTruck,
+    HireDriver,
+    AcceptTender,
 }

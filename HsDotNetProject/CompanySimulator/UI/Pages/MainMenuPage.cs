@@ -8,22 +8,23 @@ using UconsoleI.Prompt;
 using UconsoleI.Rendering;
 using UconsoleI.UI;
 
-namespace CompanySimulator.UI.MainMenu;
+namespace CompanySimulator.UI.Pages;
 
 public class MainMenuPage : IPage, IStateListener
 {
-    private readonly StateManager _stateManager;
-
-    private readonly TextPrompt<int> ChoicePrompt = new TextPrompt<int>("Select option")
+    private readonly TextPrompt<int> _choicePrompt = new TextPrompt<int>("Select option")
         {
             Choices = { 1, 2, 3, 4 },
         }
         .ShowChoices(true);
 
+    private readonly StateManager _stateManager;
+
 
     public MainMenuPage(StateManager stateManager)
     {
         _stateManager = stateManager;
+        _stateManager.SubscribeToStateChanges(this);
     }
 
     private CompanyState State => _stateManager.CurrentState.CompanyState;
@@ -42,15 +43,23 @@ public class MainMenuPage : IPage, IStateListener
         ConsoleUI.WriteLine("3. Accept Tender");
         ConsoleUI.WriteLine("4. End Round");
         ConsoleUI.WriteLine();
-        var pageToDisplay = ConsoleUI.Prompt(ChoicePrompt) switch
+        switch (ConsoleUI.Prompt(_choicePrompt))
         {
-            1 => Pages.MainMenu,
-            2 => Pages.MainMenu,
-            3 => Pages.MainMenu,
-            4 => Pages.MainMenu,
-            _ => throw new NotImplementedException(),
-        };
-        _stateManager.DispatchAction(new DisplayPageAction(pageToDisplay));
+            case 1:
+                _stateManager.DispatchAction(new DisplayPageAction(CompanySimulator.State.Pages.BuyTruck));
+                break;
+            case 2:
+                _stateManager.DispatchAction(new DisplayPageAction(CompanySimulator.State.Pages.HireDriver));
+                break;
+            case 3:
+                _stateManager.DispatchAction(new DisplayPageAction(CompanySimulator.State.Pages.AcceptTender));
+                break;
+            case 4:
+                _stateManager.DispatchAction(new EndRoundAction());
+                break;
+            default:
+                throw new NotImplementedException();
+        }
     }
 
     public void OnStateChanged(RootState oldState, RootState newState)
