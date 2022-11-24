@@ -43,7 +43,7 @@ public class InitialStateFactory : IInitialStateFactory
                 trucks
             ),
             new CompanyState(
-                "Test",
+                "",
                 new AccountBalance(50000, new Currency("EUR", "€")),
                 new List<Truck>(),
                 new List<TruckOperator>(),
