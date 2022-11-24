@@ -10,6 +10,7 @@ Until otherwise stated the HsDotNetProject Solution cotains all solutions for th
 - [Iteration 3 - Die Fahrer](/HsDotNetProject/TruckDriver/README.md)
 - [Iteration 4 - Die Fahrzeuganschaffung](/HsDotNetProject/VehicleAcquisition/README.md)
 - [Iteration 5 - Die Frachtenbörse](/HsDotNetProject/FreightMarket/README.md)
+- [Iteration 6 - Das Zusammenbauen](/HsDotNetProject/CompanySimulator/README.md)
 
 ## TODO
 - None

@@ -1,0 +1,1 @@
+Anbei der Link zum Github repo, bzw. der 6ten Abgabe: https://github.com/mathis-m/hs-dotnet-project/blob/main/HsDotNetProject/CompanySimulator/README.md
