@@ -24,8 +24,9 @@ public abstract record Truck(TruckTypes TruckType, Size Size, Age Age, Location 
         { Size.ExtraLarge, new Price(120000, EurCurrency) },
     };
 
-    private int?   _randomEnginePowerInKw;
     private Price? _price;
+
+    private int? _randomEnginePowerInKw;
 
     private int ConsumptionCorrectionForAge => Age.AgeInYears / 3;
 
@@ -57,10 +58,7 @@ public abstract record Truck(TruckTypes TruckType, Size Size, Age Age, Location 
     {
         get
         {
-            if (_price == null)
-            {
-                _price = CalculatePrice();
-            }
+            if (_price == null) _price = CalculatePrice();
             return _price;
         }
     }
