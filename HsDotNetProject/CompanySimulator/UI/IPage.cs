@@ -1,6 +1,6 @@
 ﻿namespace CompanySimulator.UI;
 
-public interface IPage
+public interface IPage : IDisposable
 {
     void Render();
 }

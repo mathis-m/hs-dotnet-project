@@ -44,7 +44,10 @@ public class AcceptTenderTests
                 new AccountBalance(InitialBalance, Currency),
                 new List<Truck>(),
                 new List<TruckOperator>(),
-                new List<TransportationTender>()
+                new List<TransportationTender>(),
+                new Dictionary<TruckOperator, Truck>(),
+                new Dictionary<Truck, RelocationRequest>(),
+                new Dictionary<TransportationTender, Truck>()
             ),
             new ApplicationState(
                 Pages.CompanyNamePrompter

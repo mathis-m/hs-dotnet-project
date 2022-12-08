@@ -19,4 +19,8 @@ public class CompanyNamePromptPage : IPage
         _stateManager.DispatchAction(new ChangeCompanyNameAction(companyName));
         _stateManager.DispatchAction(new DisplayPageAction(State.Pages.MainMenu));
     }
+
+    public void Dispose()
+    {
+    }
 }

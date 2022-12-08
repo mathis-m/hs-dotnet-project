@@ -7,4 +7,7 @@ public enum Pages
     BuyTruck,
     HireDriver,
     AcceptTender,
+    AssignDriverToTruck,
+    AssignTenderToTuck,
+    RelocateTruck,
 }

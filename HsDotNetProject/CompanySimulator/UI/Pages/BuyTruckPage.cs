@@ -1,8 +1,7 @@
 ﻿using CompanySimulator.State;
 using CompanySimulator.State.Actions;
+using CompanySimulator.UI.Utils.TableUtils;
 using UconsoleI.Components.TableComponent;
-using UconsoleI.Components.TextComponent;
-using UconsoleI.Extensions;
 using UconsoleI.Rendering;
 using VehicleAcquisition.Models.Trucks;
 
@@ -16,17 +15,12 @@ public class BuyTruckPage : BaseTablePage<Truck>
 
     protected override string Prompt => "Buy a truck";
 
-    protected override List<TableColumn> TableColumns => new()
+    protected override List<TableColumn> TableColumns => TruckTableUtil.TableColumns;
+
+    protected override IEnumerable<IComponent> GetTableRow(int num, Truck truck)
     {
-        new TableColumn("#", Justify.Right),
-        new TableColumn("Type", Justify.Center),
-        new TableColumn("Age", Justify.Center),
-        new TableColumn("Engine Power", Justify.Center),
-        new TableColumn("Max Payload", Justify.Center),
-        new TableColumn("Consumption", Justify.Center),
-        new TableColumn("Price", Justify.Center),
-        new TableColumn("Location", Justify.Center),
-    };
+        return TruckTableUtil.GetTableRow(num, truck);
+    }
 
     protected override IReadOnlyList<Truck> GetSimulationList(RootState state)
     {
@@ -36,33 +30,5 @@ public class BuyTruckPage : BaseTablePage<Truck>
     protected override ActionWithPayload<Truck> GetOnSelectedAction(Truck truck)
     {
         return new BuyTruckAction(truck);
-    }
-
-    protected override IEnumerable<IComponent> GetTableRow(int num, Truck truck)
-    {
-        return new List<IComponent>
-        {
-            new Text($"{num}")
-                .RightAligned(),
-            new Text($"{truck.TruckType}")
-                .Overflow(Overflow.Wrap),
-            new Text($"{truck.FormattedAge}")
-                .RightAligned()
-                .Overflow(Overflow.Wrap),
-            new Text($"{truck.EnginePowerInKw} kW")
-                .RightAligned()
-                .Overflow(Overflow.Wrap),
-            new Text($"{truck.MaxPayloadInTons} T")
-                .RightAligned()
-                .Overflow(Overflow.Wrap),
-            new Text($"{truck.ConsumptionPer100KmInL} L")
-                .RightAligned()
-                .Overflow(Overflow.Wrap),
-            new Text($"{truck.Price}")
-                .RightAligned()
-                .Overflow(Overflow.Wrap),
-            new Text($"{truck.Location}")
-                .Overflow(Overflow.Wrap),
-        };
     }
 }

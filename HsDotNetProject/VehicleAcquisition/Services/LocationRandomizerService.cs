@@ -5,7 +5,7 @@ namespace VehicleAcquisition.Services;
 
 public class LocationRandomizerService : BaseRandomizerService<Location>
 {
-    private static readonly IEnumerable<Location> PossibleLocations = new List<Location>
+    public static readonly IReadOnlyList<Location> PossibleLocations = new List<Location>
     {
         new("Amsterdam"),
         new("Berlin"),

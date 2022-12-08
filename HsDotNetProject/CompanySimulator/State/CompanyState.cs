@@ -10,7 +10,10 @@ public record CompanyState(
     AccountBalance AccountBalance,
     IReadOnlyList<Truck> OwnedTrucks,
     IReadOnlyList<TruckOperator> Employees,
-    IReadOnlyList<TransportationTender> AcceptedTenders
+    IReadOnlyList<TransportationTender> AcceptedTenders,
+    IReadOnlyDictionary<TruckOperator, Truck> TruckAssignments,
+    IReadOnlyDictionary<Truck, RelocationRequest> TruckRelocationRequests,
+    IReadOnlyDictionary<TransportationTender, Truck> TenderAssignments
 )
 {
     public int OwnedTruckCount => OwnedTrucks.Count;

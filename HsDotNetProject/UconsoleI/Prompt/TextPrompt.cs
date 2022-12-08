@@ -26,7 +26,7 @@ public class TextPrompt<T> : IPrompt<T>
     public bool ShowDefaultValue { get; set; } = true;
     public bool ShowChoices { get; set; } = true;
     public List<T> Choices { get; init; } = new();
-    public Styling PromptStyling { get; set; }
+    public Styling PromptStyling { get; set; } = DefaultStylings.Plain;
     public Func<T, string>? Converter { get; set; } = TypeConverterHelper.ConvertToString;
     internal DefaultPromptValue<T>? DefaultValue { get; set; }
 

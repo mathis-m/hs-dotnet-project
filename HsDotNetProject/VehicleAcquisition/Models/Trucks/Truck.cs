@@ -39,6 +39,14 @@ public abstract record Truck(TruckTypes TruckType, Size Size, Age Age, Location 
 
     protected abstract int BaseConsumptionPer100KmInL { get; }
 
+    public virtual bool Equals(Truck? other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Equals(Price, other.Price) && EnginePowerInKw == other.EnginePowerInKw && BaseConsumptionPer100KmInL == other.BaseConsumptionPer100KmInL &&
+               TruckType == other.TruckType && Size == other.Size && Age.Equals(other.Age) && Location.Equals(other.Location);
+    }
+
     public int EnginePowerInKw
     {
         get
@@ -54,14 +62,7 @@ public abstract record Truck(TruckTypes TruckType, Size Size, Age Age, Location 
 
     public int ConsumptionPer100KmInL => BaseConsumptionPer100KmInL + ConsumptionCorrectionForAge;
 
-    public Price Price
-    {
-        get
-        {
-            if (_price == null) _price = CalculatePrice();
-            return _price;
-        }
-    }
+    public Price Price => _price ??= CalculatePrice();
 
     public int MaxPayloadInTons => MaxPayloadFactory.GetMaxPayloadFor(TruckType, Size);
 
@@ -88,5 +89,10 @@ public abstract record Truck(TruckTypes TruckType, Size Size, Age Age, Location 
         var randomFactor = Random.Next(-20, 31);
         var priceFactor  = 1 + randomFactor / 100.0 - Age.AgeInYears * 0.03;
         return priceFactor;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Price, EnginePowerInKw, BaseConsumptionPer100KmInL, (int) TruckType, (int) Size, Age, Location);
     }
 }

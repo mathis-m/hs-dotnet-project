@@ -14,6 +14,9 @@ public class App : IStateListener
         { State.Pages.BuyTruck, typeof(BuyTruckPage) },
         { State.Pages.HireDriver, typeof(HireDriverPage) },
         { State.Pages.AcceptTender, typeof(AcceptTenderPage) },
+        { State.Pages.AssignDriverToTruck, typeof(AssignDriverToTruckPage) },
+        { State.Pages.RelocateTruck, typeof(RelocateTruckPage) },
+        { State.Pages.AssignTenderToTuck, typeof(AssignTenderPage) },
     };
 
     private readonly IServiceProvider _serviceProvider;
@@ -26,6 +29,8 @@ public class App : IStateListener
         stateManager.SubscribeToStateChanges(this);
     }
 
+    private IPage? CurrentPage { get; set; }
+
     public void OnStateChanged(RootState oldState, RootState newState)
     {
         var newPage = newState.ApplicationState.CurrentPage;
@@ -34,14 +39,19 @@ public class App : IStateListener
 
     private void RenderPage(State.Pages page)
     {
+        CurrentPage?.Dispose();
+
         var pageType = _pageMap[page];
         if (pageType == null)
             throw new NotImplementedException($"{page} currently not supported");
         var pageImpl = _serviceProvider.GetRequiredService(pageType);
         if (pageImpl is not IPage validPage)
             throw new InvalidOperationException($"registered {page} must be IPage");
+
+        CurrentPage = validPage;
         ConsoleUI.Console.Clear();
         validPage.Render();
+        validPage.Dispose();
     }
 
     public void Execute()

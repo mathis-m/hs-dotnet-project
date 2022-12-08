@@ -44,21 +44,23 @@ public abstract class BaseTablePage<T> : IPage, IStateListener
         if (selectedOptionOrZ != "z")
         {
             var selectedNum    = int.Parse(selectedOptionOrZ);
-            var selectedOption = Options[selectedNum - 1];
+            var selectedOption = Options[selectedNum - 1] ?? throw new InvalidOperationException("Internal failure");
 
+            Dispose();
             _stateManager.DispatchAction(GetOnSelectedAction(selectedOption));
         }
 
         _stateManager.DispatchAction(new DisplayPageAction(State.Pages.MainMenu));
     }
 
+    public void Dispose()
+    {
+        _stateManager.RemoveListener(this);
+    }
+
     public void OnStateChanged(RootState oldState, RootState newState)
     {
-        // This is expected its a immutable list.
-        // If the reference changes, we know that the values are different.
-        // No need to compare the values.
-        // ReSharper disable once PossibleUnintendedReferenceComparison
-        if (GetSimulationList(oldState) == GetSimulationList(newState)) return;
+        if (Equals(GetSimulationList(oldState), GetSimulationList(newState))) return;
 
         ConsoleUI.Console.Clear();
         Render();

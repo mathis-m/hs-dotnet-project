@@ -12,11 +12,22 @@ namespace CompanySimulator.UI.Pages;
 
 public class MainMenuPage : IPage, IStateListener
 {
-    private readonly TextPrompt<int> _choicePrompt = new TextPrompt<int>("Select option")
+    private static readonly List<(ActionWithoutPayload, string)> MenuOptions = new()
+    {
+        (new DisplayPageAction(CompanySimulator.State.Pages.BuyTruck), "Buy truck"),
+        (new DisplayPageAction(CompanySimulator.State.Pages.HireDriver), "Hire Driver"),
+        (new DisplayPageAction(CompanySimulator.State.Pages.AcceptTender), "Accept Tender"),
+        (new DisplayPageAction(CompanySimulator.State.Pages.AssignDriverToTruck), "Assign Driver to Truck"),
+        (new DisplayPageAction(CompanySimulator.State.Pages.AssignTenderToTuck), "Assign Tender to Truck"),
+        (new DisplayPageAction(CompanySimulator.State.Pages.RelocateTruck), "Relocate truck"),
+        (new EndRoundAction(), "End Round"),
+    };
+
+    private readonly TextPrompt<int> _choicePrompt = new TextPrompt<int>($"Select option [1-{MenuOptions.Count}]")
         {
-            Choices = { 1, 2, 3, 4 },
+            Choices = Enumerable.Range(1, MenuOptions.Count).ToList(),
         }
-        .ShowChoices(true);
+        .ShowChoices(false);
 
     private readonly StateManager _stateManager;
 
@@ -37,29 +48,15 @@ public class MainMenuPage : IPage, IStateListener
 
     public void Render()
     {
-        ConsoleUI.Write(GetInfoTable());
-        ConsoleUI.WriteLine("1. Buy truck");
-        ConsoleUI.WriteLine("2. Hire Driver");
-        ConsoleUI.WriteLine("3. Accept Tender");
-        ConsoleUI.WriteLine("4. End Round");
-        ConsoleUI.WriteLine();
-        switch (ConsoleUI.Prompt(_choicePrompt))
-        {
-            case 1:
-                _stateManager.DispatchAction(new DisplayPageAction(CompanySimulator.State.Pages.BuyTruck));
-                break;
-            case 2:
-                _stateManager.DispatchAction(new DisplayPageAction(CompanySimulator.State.Pages.HireDriver));
-                break;
-            case 3:
-                _stateManager.DispatchAction(new DisplayPageAction(CompanySimulator.State.Pages.AcceptTender));
-                break;
-            case 4:
-                _stateManager.DispatchAction(new EndRoundAction());
-                break;
-            default:
-                throw new NotImplementedException();
-        }
+        PrintInfoTable();
+        PrintMenuOptions();
+        var selectedOptionNum = AskUserToSelectMenuOption();
+        HandleUserSelection(selectedOptionNum);
+    }
+
+    public void Dispose()
+    {
+        _stateManager.RemoveListener(this);
     }
 
     public void OnStateChanged(RootState oldState, RootState newState)
@@ -75,6 +72,38 @@ public class MainMenuPage : IPage, IStateListener
 
         ConsoleUI.Console.Clear();
         Render();
+    }
+
+    private void HandleUserSelection(int selectedOptionNum)
+    {
+        var optionIdx = selectedOptionNum - 1;
+        var (action, _) = MenuOptions.ElementAtOrDefault(optionIdx);
+        if (action == null)
+            return;
+
+        _stateManager.DispatchAction(action);
+    }
+
+    private int AskUserToSelectMenuOption()
+    {
+        return ConsoleUI.Prompt(_choicePrompt);
+    }
+
+    private void PrintInfoTable()
+    {
+        ConsoleUI.Write(GetInfoTable());
+    }
+
+    private static void PrintMenuOptions()
+    {
+        var index = 1;
+        foreach (var (_, text) in MenuOptions)
+        {
+            ConsoleUI.WriteLine($"{index}. {text}");
+            index++;
+        }
+
+        ConsoleUI.WriteLine();
     }
 
 

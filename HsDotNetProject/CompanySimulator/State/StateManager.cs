@@ -30,8 +30,21 @@ public class StateManager
         NotifyListeners(oldState, newState);
     }
 
+
     public void DispatchAction(ActionWithoutPayload action)
     {
+        var baseType = action.GetType().BaseType;
+        if (baseType is { IsGenericType: true } && baseType.GetGenericTypeDefinition() == typeof(ActionWithPayload<>))
+        {
+            var genericOverload = typeof(StateManager).GetMethods().FirstOrDefault(x => x.IsGenericMethod && x.Name == "DispatchAction");
+            if (genericOverload is null) return;
+
+            var fooRef = genericOverload.MakeGenericMethod(baseType.GetGenericArguments()[0]);
+            fooRef.Invoke(this, new object?[] { action });
+
+            return;
+        }
+
         var reducer = _serviceProvider.GetRequiredService(action.ReducerType);
         if (reducer is not IReducer validReducer) throw new InvalidOperationException("The action must define a valid reducer type");
 
@@ -50,5 +63,18 @@ public class StateManager
     public void SubscribeToStateChanges(IStateListener listener)
     {
         _listeners.Add(listener);
+    }
+
+
+    public void RemoveListener(IStateListener listener)
+    {
+        try
+        {
+            _listeners.Remove(listener);
+        }
+        catch
+        {
+            // Ignore was already removed
+        }
     }
 }

@@ -107,17 +107,23 @@ internal class Program
             .AddSingleton<DriverHiredReducer>()
             .AddSingleton<TenderAcceptedReducer>()
             .AddSingleton<RoundEndedReducer>()
+            .AddSingleton<DriverAssignedToTruckReducer>()
+            .AddSingleton<TruckRelocationRequestedReducer>()
+            .AddSingleton<TenderAssignedToTruckReducer>()
             .AddSingleton<TruckBoughtReducer>();
     }
 
     private static void RegisterPages(IServiceCollection services)
     {
         services
-            .AddSingleton<CompanyNamePromptPage>()
-            .AddSingleton<BuyTruckPage>()
-            .AddSingleton<HireDriverPage>()
-            .AddSingleton<AcceptTenderPage>()
-            .AddSingleton<MainMenuPage>();
+            .AddTransient<CompanyNamePromptPage>()
+            .AddTransient<BuyTruckPage>()
+            .AddTransient<HireDriverPage>()
+            .AddTransient<AcceptTenderPage>()
+            .AddTransient<AssignDriverToTruckPage>()
+            .AddTransient<RelocateTruckPage>()
+            .AddTransient<AssignTenderPage>()
+            .AddTransient<MainMenuPage>();
     }
 
     private static void RegisterRandomizer(IServiceCollection services)
