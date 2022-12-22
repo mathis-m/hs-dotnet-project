@@ -1,4 +1,6 @@
+using Common.BngUtils;
 using Common.Models;
+using CompanySimulator.Factories;
 using CompanySimulator.Models;
 using CompanySimulator.State;
 using CompanySimulator.State.Actions;
@@ -13,9 +15,9 @@ namespace CompanySimulator.Tests;
 
 public class RelocateTruckRequestTests
 {
-    private static readonly Location TargetLocation = new("target");
+    private static readonly Location TargetLocation = new("Amsterdam");
 
-    private readonly Truck _assignedTruck         = new TankerTruck(Size.Small, new Age(5), new Location("some"));
+    private readonly Truck _assignedTruck         = new TankerTruck(Size.Small, new Age(5), new Location("Berlin"));
     private readonly Truck _assignedTruckAtTarget = new TankerTruck(Size.Small, new Age(5), TargetLocation);
 
     private readonly TruckOperator _driver = new(
@@ -30,14 +32,14 @@ public class RelocateTruckRequestTests
         new DriverCategory("some cat")
     );
 
-    private readonly Truck _notOwnedTruck                = new RefrigeratedTruck(Size.Small, new Age(5), new Location("somewhere else"));
-    private readonly Truck _truckWithExistingRelocation  = new RefrigeratedTruck(Size.Small, new Age(5), new Location("somewhere"));
-    private readonly Truck _truckWithExistingRelocation2 = new RefrigeratedTruck(Size.Small, new Age(5), new Location("somewhere different"));
-    private readonly Truck _unassignedTruck              = new FlatbedTruck(Size.Small, new Age(5), new Location("some other"));
+    private readonly Truck _notOwnedTruck                = new RefrigeratedTruck(Size.Small, new Age(5), new Location("Esslingen"));
+    private readonly Truck _truckWithExistingRelocation  = new RefrigeratedTruck(Size.Small, new Age(5), new Location("Rom"));
+    private readonly Truck _truckWithExistingRelocation2 = new RefrigeratedTruck(Size.Small, new Age(5), new Location("Lissabon"));
+    private readonly Truck _unassignedTruck              = new FlatbedTruck(Size.Small, new Age(5), new Location("Istanbul"));
     private readonly Truck _unassignedTruckAtTarget      = new FlatbedTruck(Size.Small, new Age(5), TargetLocation);
 
     private RootState State { get; set; } = null!;
-    private TruckRelocationRequestedReducer TruckRelocationRequestedReducer { get; } = new();
+    private TruckRelocationRequestedReducer TruckRelocationRequestedReducer { get; } = new(new RelocationStatsFactory(new BngDistanceCalculator()));
 
     [SetUp]
     public void Setup()
@@ -62,8 +64,8 @@ public class RelocateTruckRequestTests
                 },
                 new Dictionary<Truck, RelocationRequest>
                 {
-                    [_truckWithExistingRelocation]  = new(new Location("somewhere else"), RelocationStatus.WaitingForDriver),
-                    [_truckWithExistingRelocation2] = new(new Location("somewhere"), RelocationStatus.Arrived),
+                    [_truckWithExistingRelocation]  = new(new Location("Esslingen"), RelocationStatus.WaitingForDriver, null, null),
+                    [_truckWithExistingRelocation2] = new(new Location("Rom"), RelocationStatus.Arrived, null, null),
                 },
                 new Dictionary<TransportationTender, Truck>()
             ),

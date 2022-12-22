@@ -25,10 +25,19 @@ public class TenderAssignedToTruckReducer : IReducerT<AssignTenderToTruckPayload
         // TODO: check that tender is valid, tbd what valid means
         ValidatePayload(currentState, payload, currentAssignments, ongoingRelocation);
 
-
         var derivedAssignments = AddOrReassignTruckToTender(payload, currentAssignments);
 
-        var derivedRelocationRequests = ReduceRelocationRequests(currentState, payload);
+        var tmpDerivedCompanyState = currentState.CompanyState with
+        {
+            TenderAssignments = derivedAssignments,
+        };
+
+        var tmpState = currentState with
+        {
+            CompanyState = tmpDerivedCompanyState,
+        };
+
+        var derivedRelocationRequests = ReduceRelocationRequests(tmpState, payload);
 
         var derivedCompanyState = currentState.CompanyState with
         {
@@ -44,7 +53,7 @@ public class TenderAssignedToTruckReducer : IReducerT<AssignTenderToTruckPayload
 
     private IReadOnlyDictionary<Truck, RelocationRequest> ReduceRelocationRequests(RootState currentState, AssignTenderToTruckPayload payload)
     {
-        var derivedRelocationState = _relocationReducer.Reduce(currentState, new RequestTruckRelocationPayload(payload.Truck, payload.Tender.TargetLocation));
+        var derivedRelocationState = _relocationReducer.Reduce(currentState, new RequestTruckRelocationPayload(payload.Truck, payload.Tender.TargetLocation, payload.Tender.TransportationGoods.WeightInTons));
 
         var derivedRelocationRequests = derivedRelocationState.CompanyState.TruckRelocationRequests;
         return derivedRelocationRequests;
@@ -78,7 +87,7 @@ public class TenderAssignedToTruckReducer : IReducerT<AssignTenderToTruckPayload
 
         if (!IsTruckFittingTenderRequirements(payload.Truck, payload.Tender)) throw new InvalidOperationException("Truck does not satisfy the tender requirements");
 
-        if (ongoingRelocation is { Status: not RelocationStatus.Arrived }) throw new InvalidOperationException("Cannot assign tender to a truck with ongoing relocation");
+        if (ongoingRelocation is { Status: RelocationStatus.RelocationStarted }) throw new InvalidOperationException("Cannot assign tender to a truck with ongoing relocation");
     }
 
     private static bool IsTruckFittingTenderRequirements(ITruck truck, TransportationTender tender)

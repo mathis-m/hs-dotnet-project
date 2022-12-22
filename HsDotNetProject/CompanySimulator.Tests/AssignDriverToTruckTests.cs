@@ -1,4 +1,6 @@
+using Common.BngUtils;
 using Common.Models;
+using CompanySimulator.Factories;
 using CompanySimulator.Models;
 using CompanySimulator.State;
 using CompanySimulator.State.Actions;
@@ -38,7 +40,7 @@ public class AssignDriverToTruckTests
     private readonly Truck _truckToAssignTo = new TankerTruck(Size.Small, new Age(5), new Location("some"));
 
     private RootState State { get; set; } = null!;
-    private DriverAssignedToTruckReducer DriverAssignedToTruckReducer { get; } = new();
+    private DriverAssignedToTruckReducer DriverAssignedToTruckReducer { get; } = new(new RelocationStatsFactory(new BngDistanceCalculator()));
 
     [SetUp]
     public void Setup()

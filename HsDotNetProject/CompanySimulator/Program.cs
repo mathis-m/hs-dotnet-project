@@ -1,4 +1,5 @@
-﻿using Common.Services;
+﻿using Common.BngUtils;
+using Common.Services;
 using CompanySimulator.Factories;
 using CompanySimulator.State;
 using CompanySimulator.State.Reducers;
@@ -56,11 +57,11 @@ internal class Program
             {
                 opt.AvailableTypes = new List<string>
                 {
-                    "Old, but experienced",
-                    "Racer",
-                    "Dreamy",
-                    "Loves his job",
-                    "Inconspicuous",
+                    DriverCategory.OldButExperiencedType,
+                    DriverCategory.RacerType,
+                    DriverCategory.DreamyType,
+                    DriverCategory.LovesHisJobType,
+                    DriverCategory.Inconspicuous,
                 };
             })
             .Configure<SalaryExpectationLimitsConfig>(opt =>
@@ -79,7 +80,10 @@ internal class Program
 
     private static void RegisterHelpers(IServiceCollection services)
     {
-        services.AddSingleton<IDeliveryCalculator, DeliveryCalculator>();
+        services
+            .AddSingleton<IDeliveryCalculator, DeliveryCalculator>()
+            .AddSingleton<IRelocationStatsFactory, RelocationStatsFactory>()
+            .AddSingleton<IBngDistanceCalculator, BngDistanceCalculator>();
     }
 
     private static void RegisterRepositories(IServiceCollection services)

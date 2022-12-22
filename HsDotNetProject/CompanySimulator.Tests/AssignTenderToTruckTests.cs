@@ -1,4 +1,6 @@
+using Common.BngUtils;
 using Common.Models;
+using CompanySimulator.Factories;
 using CompanySimulator.Models;
 using CompanySimulator.State;
 using CompanySimulator.State.Actions;
@@ -73,7 +75,7 @@ public class AssignTenderToTruckTests
     private readonly Truck _wrongTypeTruck = new FlatbedTruck(Size.Small, new Age(5), StartLocation);
 
     private RootState State { get; set; } = null!;
-    private TenderAssignedToTruckReducer TenderAssignedToTruckReducer { get; } = new(new TruckRelocationRequestedReducer());
+    private TenderAssignedToTruckReducer TenderAssignedToTruckReducer { get; } = new(new TruckRelocationRequestedReducer(new RelocationStatsFactory(new BngDistanceCalculator())));
 
     [SetUp]
     public void Setup()
@@ -94,8 +96,8 @@ public class AssignTenderToTruckTests
                 new Dictionary<TruckOperator, Truck>(),
                 new Dictionary<Truck, RelocationRequest>
                 {
-                    [_truckWithRelocation]        = new(new Location("some other location"), RelocationStatus.WaitingForDriver),
-                    [_truckWithRelocationArrived] = new(StartLocation, RelocationStatus.Arrived),
+                    [_truckWithRelocation]        = new(new Location("some other location"), RelocationStatus.WaitingForDriver, null, null),
+                    [_truckWithRelocationArrived] = new(StartLocation, RelocationStatus.Arrived, null, null),
                 },
                 new Dictionary<TransportationTender, Truck>
                 {
