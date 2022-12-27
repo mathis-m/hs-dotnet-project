@@ -43,8 +43,8 @@ public class DriverAssignedToTruckReducer : IReducerT<AssignDriverToTruckPayload
 
         if (derivedRelocationRequests.ContainsKey(payload.Truck))
         {
-            var request = derivedRelocationRequests[payload.Truck];
-            var stats   = _statsFactory.Create(payload.Truck, payload.Driver, request.TargetLocation, 0);
+            var request          = derivedRelocationRequests[payload.Truck];
+            var stats            = _statsFactory.Create(payload.Truck, payload.Driver, request.TargetLocation, 0);
             var estimatedArrival = _statsFactory.CalculateArrival(stats, currentState.SimulationState.SimulationDate);
             derivedRelocationRequests[payload.Truck] = request with
             {

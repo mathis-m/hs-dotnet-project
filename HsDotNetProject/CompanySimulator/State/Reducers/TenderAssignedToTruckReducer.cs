@@ -53,7 +53,8 @@ public class TenderAssignedToTruckReducer : IReducerT<AssignTenderToTruckPayload
 
     private IReadOnlyDictionary<Truck, RelocationRequest> ReduceRelocationRequests(RootState currentState, AssignTenderToTruckPayload payload)
     {
-        var derivedRelocationState = _relocationReducer.Reduce(currentState, new RequestTruckRelocationPayload(payload.Truck, payload.Tender.TargetLocation, payload.Tender.TransportationGoods.WeightInTons));
+        var derivedRelocationState = _relocationReducer.Reduce(currentState,
+            new RequestTruckRelocationPayload(payload.Truck, payload.Tender.TargetLocation, payload.Tender.TransportationGoods.WeightInTons));
 
         var derivedRelocationRequests = derivedRelocationState.CompanyState.TruckRelocationRequests;
         return derivedRelocationRequests;

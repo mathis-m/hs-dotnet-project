@@ -40,7 +40,8 @@ public class RoundEndedReducer : IReducer
         };
     }
 
-    private static (Dictionary<Truck, RelocationRequest>, IReadOnlyList<Truck>, Dictionary<TruckOperator, Truck>) DeriveArrivedTrucksAndDependencies(CompanyState state, DateTime nextDate,
+    private static (Dictionary<Truck, RelocationRequest>, IReadOnlyList<Truck>, Dictionary<TruckOperator, Truck>) DeriveArrivedTrucksAndDependencies(CompanyState state,
+        DateTime nextDate,
         out double sumFuelCost)
     {
         var derivedRequests    = new Dictionary<Truck, RelocationRequest>();
@@ -54,22 +55,30 @@ public class RoundEndedReducer : IReducer
             {
                 derivedRequests[truck] = relocation;
                 continue;
-            };
+            }
+
+            ;
             if (relocation.Stats == null)
             {
                 derivedRequests[truck] = relocation;
                 continue;
-            };
+            }
+
+            ;
             if (!relocation.EstimatedArrival.HasValue)
             {
                 derivedRequests[truck] = relocation;
                 continue;
-            };
+            }
+
+            ;
             if (relocation.EstimatedArrival.Value.Date > nextDate.Date)
             {
                 derivedRequests[truck] = relocation;
                 continue;
-            };
+            }
+
+            ;
 
             var derivedTruck = truck with
             {
@@ -88,11 +97,8 @@ public class RoundEndedReducer : IReducer
 
     private static void UpdateTrucks(IList<Truck> derivedTrucks, Truck truck, Truck derivedTruck)
     {
-        var idx = derivedTrucks.IndexOf(truck);
-        if (idx != -1)
-        {
-            derivedTrucks[idx] = derivedTruck;
-        }
+        var idx                           = derivedTrucks.IndexOf(truck);
+        if (idx != -1) derivedTrucks[idx] = derivedTruck;
     }
 
     private static void UpdateRelocationStatus(IDictionary<Truck, RelocationRequest> derivedRequests, Truck derivedTruck, RelocationRequest relocation)

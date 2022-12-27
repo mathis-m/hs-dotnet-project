@@ -20,7 +20,7 @@ public class RelocationStatsFactory : IRelocationStatsFactory
     private const double WorkingHoursPerDay = 8;
 
 
-    private static Dictionary<string, BngPoint> CityLocationLookup = new()
+    private static readonly Dictionary<string, BngPoint> CityLocationLookup = new()
     {
         { "Amsterdam", new BngPoint(868851, 297477) },
         { "Berlin", new BngPoint(1442341, 404144) },
@@ -59,7 +59,7 @@ public class RelocationStatsFactory : IRelocationStatsFactory
     private static TimeSpan GetDurationInDays(double avgSpeed, double distance)
     {
         var exactHours = distance / avgSpeed;
-        var exactDays = exactHours / WorkingHoursPerDay;
+        var exactDays  = exactHours / WorkingHoursPerDay;
 
         return TimeSpan.FromDays(exactDays);
     }

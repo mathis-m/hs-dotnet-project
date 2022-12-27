@@ -7,4 +7,4 @@ public record DriverCategory(string Type)
     public const string RacerType             = "Racer";
     public const string LovesHisJobType       = "Loves his job";
     public const string Inconspicuous         = "Inconspicuous";
-};
+}
